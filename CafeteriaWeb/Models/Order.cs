@@ -35,6 +35,8 @@ namespace CafeteriaWeb.Models
 
         public string UserId { get; set; }
         public virtual User User { get; set; }
+        public int AdressId { get; set; }
+        public virtual Adress Adress { get; set; }
         public bool Enabled { get; set; }
     }
 }

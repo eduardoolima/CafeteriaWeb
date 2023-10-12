@@ -33,10 +33,14 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped(sp => ShoppingCart.GetShoppingCart(sp));
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AdressService>();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<OrderService>();
+
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -54,8 +58,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

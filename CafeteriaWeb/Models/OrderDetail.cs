@@ -7,7 +7,7 @@ namespace CafeteriaWeb.Models
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public int SnackId { get; set; }
+        public int ProductId { get; set; }
         public int Amount { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]

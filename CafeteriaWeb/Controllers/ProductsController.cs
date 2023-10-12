@@ -303,8 +303,8 @@ namespace CafeteriaWeb.Controllers
         void ListCategories()
         {
             var categories = _categoryService.ListAll();
-            categories.Insert(0, new Category { Id = 0, Description = "Selecione" });
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "Description");
+            categories.Insert(0, new Category { Id = 0, Name = "Selecione" });
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
         }
     }
 }

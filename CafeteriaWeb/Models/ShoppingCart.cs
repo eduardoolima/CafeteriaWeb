@@ -81,6 +81,20 @@ namespace CafeteriaWeb.Models
             return localAmount;
         }
 
+        public int RemoveAllProductsFromShoppingCart(Product product)
+        {
+            var shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(
+                s => s.Product.Id == product.Id && s.ShoppingCartId == Id);
+            var localAmount = 0;
+
+            if (shoppingCartItem != null)
+            {
+                _context.ShoppingCartItems.Remove(shoppingCartItem);
+            }
+            _context.SaveChanges();
+            return localAmount;
+        }
+
         public List<ShoppingCartItem> GetShoppingCartItems()
         {
             return ShoppingCartItems ??

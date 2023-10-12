@@ -59,7 +59,9 @@
                     </ul>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        
+                        <div style="margin-right:20px;">
+                            @await Component.InvokeAsync("ShoppingCartResume")
+                        </div>
                     }
                     <partial name="_LoginPartial" />
                 </div>
