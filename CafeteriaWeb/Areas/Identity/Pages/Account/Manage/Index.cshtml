@@ -1,0 +1,207 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Perfil";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.9/jquery.inputmask.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Máscara para o campo de telefone (assumindo o formato (99) 9999-9999)
+        $('#PhoneNumber').inputmask('(99) 9999-9999');
+
+        // Máscara para o campo de CPF (assumindo o formato 999.999.999-99)
+        $('#cpf').inputmask('999.999.999-99');
+    });
+</script>*@
+<style>
+    input[type=file] {
+        display: none;
+    }
+   
+
+</style>
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-12">
+        <form id="profile-form" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="row">
+                <div class="form-group col-4 mb-3">
+                    <img id="profilePicture" src="@Url.Content(Model.InputUser.PathPhoto)" height="160" width="160" />
+                    <label style="width:160px;border-top-left-radius: 0;border-top-right-radius: 0;" for="photo" class="control-label btn btn-primary">Foto de Perfil <i class="fa fa-camera"></i></label>
+                    <input asp-for="InputUser.PathPhoto" type="file" accept="image/*" id="photo" name="photo"
+                           onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="InputUser.PathPhoto" class="text-danger"></span>
+                </div>
+
+                <div class="col-8">
+                    <div class="form-floating  mb-3">
+                        <input asp-for="Username" class="form-control" placeholder="Nome de Usuário" disabled />
+                        <label asp-for="Username" class="form-label">Nome de Usuário</label>
+                    </div>
+                    <div class="form-floating  mb-3">
+                        <input id="PhoneNumber" asp-for="InputUser.PhoneNumber" class="form-control" data-mask="(00)90000-0000" placeholder="Telefone" />
+                        <label asp-for="InputUser.PhoneNumber" class="form-label">Telefone</label>
+                        <span asp-validation-for="InputUser.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input id="cpf" asp-for="InputUser.Cpf" class="form-control" data-mask="000.000.000-00" placeholder="CPF" />
+                        <label asp-for="InputUser.Cpf" class="form-label">CPF</label>
+                        <span asp-validation-for="InputUser.Cpf" class="text-danger"></span>
+                    </div>
+                </div>
+                
+            </div>  
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-floating  mb-3">
+                        <input id="Firsname" asp-for="InputUser.FirstName" class="form-control"/>
+                        <label asp-for="InputUser.FirstName" class="form-label">Nome</label>
+                        <span asp-validation-for="InputUser.FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-floating  mb-3">
+                        <input id="Firsname" asp-for="InputUser.LastName" class="form-control" />
+                        <label asp-for="InputUser.LastName" class="form-label">Sobrenome</label>
+                        <span asp-validation-for="InputUser.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-floating mb-3">
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="">
+                            <th scope="col">Nome</th>
+                            <th scope="col">Endereço</th>
+                            <th scope="col">Número</th>
+                            @*<th scope="col"><a class="btn btn-primary" href="/Adresses/Create" role="button"><i class="fa-solid fa-plus"></i></a></th>*@
+                            <th scope="col">
+                                <a href="#" id="create-button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Novo"><i class="fa-solid fa-plus"></i></a>
+                                @*<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreateAdress">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>*@
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.InputUser.Adresses != null && Model.InputUser.Adresses.Count > 0)
+                        {
+                            @foreach (var item in Model.InputUser.Adresses)
+                            {
+                                <tr class="">
+                                    <td>@item.Name</td>
+                                    <td>@item.Street - @item.Neighborhood</td>
+                                    <td>@item.Number</td>
+                                    <td>
+                                        @*<a id="editAdress" asp-route-id="@item.Id" data-id="@item.Id" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a> <strong>|</strong>*@
+                                        <a href="#" id="edit-button" data-id="@item.Id" class="edit-button text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a> <strong>|</strong>
+                                        <a href="#" id="delete-button" data-id="@item.Id" class="delete-button text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
+                                        @*<a id="deleteAdress" asp-route-id="@item.Id" data-id="@item.Id" class="text-danger" data-bs-toggle="modal" data-bs-target="#modalDeleteAdress" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>*@
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr class="table-active table-light text-center">
+                                <td colspan="4">Nenhum endereço cadastrado</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Salvar</button>
+
+@*            <div class="modal fade" id="modalCreateAdress">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title">Endereços</h1>
+                            <button type="button" class="close btn btn-danger" data-bs-dismiss="modal">
+                                <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span><span class="sr-only">Fechar</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Inclua aqui o conteúdo da sua View Razor -->
+                            @Html.Partial("~/Views/Adresses/Create.cshtml", Model.Adress)
+                        </div>*@
+                        @*<div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        </div>*@
+                   @* </div>
+                </div>
+            </div>*@
+
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
+</div>
+
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            $('#create-button').click(function () {
+
+                $("#modal").load("/Adresses/Create", function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.edit-button').click(function () {
+                debugger
+                var id = $(this).data('id');
+                //var modalUrl = `/Adresses/Edit?id=${id}`;
+
+                var id = $(this).attr("data-id");
+                $("#modal").load("/Adresses/Edit/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.delete-button').click(function () {
+                debugger
+                var id = $(this).data('id');
+
+                var id = $(this).attr("data-id");
+                $("#modal").load("/Adresses/Delete/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+        });
+
+        function validateForm() {
+            var phoneNumber = document.getElementById("PhoneNumber").value;
+            var cpf = document.getElementById("cpf").value;
+
+            // Define as máscaras esperadas
+            var phoneNumberMask = /\(\d{2}\)\d{5}-\d{4}/;
+            var cpfMask = /\d{3}\.\d{3}\.\d{3}-\d{2}/;
+
+            if (!phoneNumberMask.test(phoneNumber)) {
+                alert("Telefone inválido. Por favor, siga o formato (__)9____-____.");
+                return false;
+            }
+            if (!cpfMask.test(cpf)) {
+                alert("CPF inválido. Por favor, siga o formato 000.000.000-00.");
+                return false
+            }
+
+            return true;
+        }
+    </script>
+
+
+
+    <partial name="_ValidationScriptsPartial" />
+}

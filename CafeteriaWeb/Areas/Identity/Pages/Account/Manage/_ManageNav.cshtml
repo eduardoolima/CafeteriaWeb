@@ -1,0 +1,16 @@
+﻿@using CafeteriaWeb.Models;
+@inject SignInManager<User> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index"><i class="fa-solid fa-address-card"></i> Perfil</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email"><i class="fa fa-envelope" aria-hidden="true"></i> Email</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword"><i class="fa fa-lock" aria-hidden="true"></i> Senha</a></li>
+    @if (hasExternalLogins)
+    {
+        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins"><i class="fa fa-external-link" aria-hidden="true"></i> Logins Externos</a></li>
+    }
+    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication"><i class="fa-solid fa-user-shield"></i> Autenticação de 2 Fatores</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData"><i class="fa-solid fa-address-book"></i> Dados Pessoais</a></li>
+</ul>

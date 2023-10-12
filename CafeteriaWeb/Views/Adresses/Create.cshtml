@@ -1,0 +1,103 @@
+﻿@model CafeteriaWeb.Models.Adress
+
+@{
+    ViewData["Title"] = "Endereço";
+}
+
+<div class="modal-dialog adjustment-modal">
+    <div class="modal-content" style="z-index:100;">
+        <div class="modal-header">
+            <h1 class="modal-title">Cadastrar endereço</h1>
+            <button type="button" class="close btn btn-danger" data-bs-dismiss="modal">
+                <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span><span class="sr-only">Close</span>
+            </button>
+        </div>
+@*<h1>Cadastrar novo endereço</h1>
+
+<hr />*@
+        <div class="row content-page">
+            <div class="col-md-12">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>                    
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Street" class="control-label"></label>
+                                <input asp-for="Street" class="form-control" />
+                                <span asp-validation-for="Street" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Number" class="control-label"></label>
+                                <input asp-for="Number" class="form-control" />
+                                <span asp-validation-for="Number" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Neighborhood" class="control-label"></label>
+                                <input asp-for="Neighborhood" class="form-control" />
+                                <span asp-validation-for="Neighborhood" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Cep" class="control-label"></label>
+                                <input asp-for="Cep" class="form-control" />
+                                <span asp-validation-for="Cep" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Town" class="control-label"></label>
+                                <input asp-for="Town" class="form-control" />
+                                <span asp-validation-for="Town" class="text-danger"></span>
+                            </div>
+                                </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Complement" class="control-label"></label>
+                                <input asp-for="Complement" class="form-control" />
+                                <span asp-validation-for="Complement" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="submit" value="Gravar" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <div class="col-6 text" style="text-align: end">
+                            <div class="form-group">
+                                <button type="button" class="close btn btn-secondary ml-2" data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+                                @* <a class="btn btn-secondary ml-2" asp-action="Index">Voltar</a>*@
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

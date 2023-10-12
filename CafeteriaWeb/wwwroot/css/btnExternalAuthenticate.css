@@ -1,0 +1,32 @@
+﻿.logo-g {
+    margin-right: 18px;
+    width: 30px;
+    height: 30px;
+    
+}
+
+.button-g {
+    text-align: left;
+    width: 250px;
+    background: #FFF;
+    color: #333;
+    border: none;
+    box-shadow: 3px 5px 15px rgb(0 0 0 / 15%);
+    transition: 2s;
+}
+.button-g:hover {
+    color: #333;
+    background:#FFF;
+    border:none;
+    filter:brightness(0.95);
+}
+
+.div-g {
+    display: flex;
+    justify-content: center;
+}
+
+.tittle-g {
+    display: flex;
+    justify-content: center;
+}

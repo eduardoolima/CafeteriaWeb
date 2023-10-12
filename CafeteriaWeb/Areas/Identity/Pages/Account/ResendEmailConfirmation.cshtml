@@ -1,0 +1,40 @@
+﻿@page
+@model ResendEmailConfirmationModel
+@{
+    ViewData["Title"] = "Reenviar email de confirmação";
+}
+
+<link rel="stylesheet" href="~/css/recoveryPassword.css" />
+
+<div class="modal-dialog adjustment-modal">
+    <div class="modal-content" style="z-index:100;">
+        <div class="modal-header">
+            <h1 class="modal-title">@ViewData["Title"]</h1>
+            <button type="button" class="close btn btn-danger" data-bs-dismiss="modal">
+                <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span><span class="sr-only">Fechar</span>
+            </button>
+        </div>
+        <div class="container">
+            <div class="modal-container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="post">
+                            <p>Insira seu email</p>
+                            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
+                                <label asp-for="Input.Email" class="form-label"></label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="w-100 btn btn-lg btn-primary">Reenviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

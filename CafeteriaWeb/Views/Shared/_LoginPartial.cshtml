@@ -1,0 +1,43 @@
+﻿@using CafeteriaWeb.Services;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<style>
+    .profile-photo-nav {
+        border-radius: 150px;
+    }
+
+    .profile-photo-nav-div {
+        margin-top: 5px;
+    }
+</style>
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    var user = await UserManager.GetUserAsync(User);
+    <li class="nav-item">
+        <div class="profile-photo-nav-div">
+            <img class="profile-photo-nav" src="@Url.Content(user.PathPhoto)" height="30" width="30" />
+        </div>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Olá @user.FirstName!</a>
+    </li>
+    <li class="nav-item">
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="nav-link btn btn-link text-light">Sair</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Registre-se</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>

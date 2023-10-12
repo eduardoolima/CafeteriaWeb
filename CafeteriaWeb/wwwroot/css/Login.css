@@ -1,0 +1,22 @@
+﻿.loginCard {
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.form-floating {
+    margin: 10px 0;
+}
+
+.login-submit-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-submit-button {
+    width: 80%;    
+}
+.login-submit-button:hover {
+    background-color: #0056b3;
+}

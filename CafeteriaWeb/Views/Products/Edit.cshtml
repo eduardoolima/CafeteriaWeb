@@ -1,0 +1,194 @@
+﻿@model CafeteriaWeb.Models.Product
+
+@{
+    ViewData["Title"] = "Editar Produto";
+}
+
+<style>
+    input[type=file] {
+        display: none;
+    }
+
+    .vertical-align-center {
+        vertical-align: middle;
+    }
+
+    .money-mask {
+    }
+
+    .file-info {
+        display: none;
+        width: 200px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #e2e3e5;
+    }
+</style>
+
+<h1>Cadastrar Produto</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <partial name="_StatusMessage" for="StatusMessage" />
+        <form asp-action="Edit" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+@*                <input asp-for="ImgPathOld" type="hidden" />
+                <input asp-for="ImgThumbnailPathOld" type="hidden" />*@
+                <div class="form-group col-3 mb-3">
+                    <img id="imgProduct" src="@Url.Content(Model.ImgPath)" height="200" width="200" />
+                    <label style="width:200px;border-radius: 0;" for="img" title="Apenas PNG, JPE e JPEG" class="control-label btn btn-primary">Imagem <i class="fa-regular fa-image"></i></label>
+                    <input asp-for="ImgPath" type="file" accept=".jpg, .jpeg, .png" id="img" name="img"
+                           onchange="document.getElementById('imgProduct').src = window.URL.createObjectURL(this.files[0])" />
+                    <span id="validadtionImg" class="text-danger" style="display: block;"></span>
+                    <div id="fileInfo" class="file-info">
+                        <div>
+                            <p><strong>Nome do arquivo:</strong> <span id="fileName"></span></p>
+                            <p><strong>Tamanho do arquivo:</strong> <span id="fileSize"></span></p>
+                            <p><strong>Tipo de arquivo:</strong> <span id="fileType"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="col-md-2" style="display: flex; align-items: center; margin-top: 20px;">
+                        <div class="form-group form-check form-switch">
+                            <label class="form-check-label">
+                                @Html.DisplayNameFor(model => model.IsFavorite) <input class="form-check-input" asp-for="IsFavorite" />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-7">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Price" class="control-label">Preço</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input asp-for="Price" class="form-control money-mask" />
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2" style="display: flex; align-items: center; margin-top: 20px;">
+                            <div class="form-group form-check form-switch">
+                                <label class="form-check-label">
+                                    @Html.DisplayNameFor(model => model.IsAvaible) <input class="form-check-input" asp-for="IsAvaible"/>
+                                </label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SmallDescription" class="control-label"></label>
+                        <input asp-for="SmallDescription" class="form-control" />
+                        <span asp-validation-for="SmallDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="control-label">Categoria</label>
+                        <select id="ddlCategory" asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                        <span id="validationCategory" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="submit" value="Gravar" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <div class="col-6 text" style="text-align: end">
+                            <div class="form-group">
+                                <a class="btn btn-secondary ml-2" asp-action="Index">Voltar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+    }
+    <script>
+        function validateForm() {
+            debugger
+            let hasErros = false;            
+            let ddlCategory = document.getElementById("ddlCategory")
+            let validationCategory = document.getElementById("validationCategory")
+            if (ddlCategory.options.selectedIndex == "0") {
+                validationCategory.innerHTML = "Selecione uma categoria valida"
+                hasErros = true
+            }
+            else
+                validationCategory.innerHTML = ""
+            return !hasErros
+
+        }     
+
+
+        $(document).ready(function () {
+            $('.money-mask').mask('000000.00', { reverse: true });
+        });
+
+        document.getElementById("img").addEventListener("change", function () {
+            debugger
+            var fileInfo = document.getElementById("fileInfo");
+            var selectedFile = this.files[0];
+            if (selectedFile) {
+
+                var allowedExtensions = ["jpg", "jpeg", "png"];
+                var fileName = selectedFile.name;
+                var fileExtension = fileName.split(".").pop().toLowerCase();
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert("Tipo de arquivo não permitido. Por favor, selecione um arquivo JPG, JPEG ou PNG.");
+                    this.value = "";
+                    return;
+                }
+                fileInfo.style.display = "block"
+                var fileName = selectedFile.name;
+                var fileSize = selectedFile.size;
+                var fileType = selectedFile.type;
+                var fileSizeFormatted = formatBytes(fileSize);
+
+                document.getElementById("fileName").textContent = fileName;
+                document.getElementById("fileSize").textContent = fileSizeFormatted;
+                document.getElementById("fileType").textContent = fileType;
+                let validadtionImg = document.getElementById("validadtionImg")
+                validadtionImg.innerHTML = ""
+            } else {
+                fileInfo.style.display = "none"
+                document.getElementById("fileName").textContent = "";
+                document.getElementById("fileSize").textContent = "";
+                document.getElementById("fileType").textContent = "";
+            }
+        });
+
+        // Função para formatar o tamanho do arquivo em bytes para KB, MB, etc.
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+    </script>
+
+
+}
