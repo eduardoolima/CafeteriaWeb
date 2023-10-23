@@ -10,8 +10,13 @@
             </span>
             @if(Model.ShoppingCart.ShoppingCartItems.Count > 0)
             {
+                int ItensAmount = 0;
+                foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+                {
+                    ItensAmount += item.Amount;
+                }
                 <span style="color: white; position: absolute; top: -8px; right: -8px; width: 18px; height: 18px; background-color: red; border-radius: 50%; text-align: center; line-height: 18px; font-size: 12px;">
-                    <span style="display: inline-block; vertical-align: top;">@Model.ShoppingCart.ShoppingCartItems.Count</span>
+                    <span style="display: inline-block; vertical-align: top;">@ItensAmount</span>
                 </span>        
             }
         </div>

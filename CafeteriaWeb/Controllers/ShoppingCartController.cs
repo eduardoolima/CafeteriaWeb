@@ -6,6 +6,7 @@ using CafeteriaWeb.Services;
 
 namespace CafeteriaWeb.Controllers
 {
+    [Authorize]
     public class ShoppingCartController : Controller
     {
         private readonly ProductService _productsService;
@@ -28,7 +29,7 @@ namespace CafeteriaWeb.Controllers
                 ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
             };
             return View(shoppingCartVM);
-        }
+        }       
 
         [Authorize]
         public IActionResult AddItemToShoppingCart(int id)

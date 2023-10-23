@@ -59,13 +59,20 @@
             </tfoot>
         </table>
 
-        <div class="text-right">
-            <div class="btn-group">
-                <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Encerrar Pedido</a>
-                &nbsp;&nbsp;&nbsp;
-                <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Continuar Comprando</a>
+        <div class="row">
+            <div class="col-6">
+                <a class="btn btn-success" asp-controller="Order" asp-action="FinishOrder">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABaElEQVR4nO3UP0iWURTH8VsphIsNTrboIARBS1vh4NAiJTjq4CgNglu1VXsUbrk0NClEINHkIChOOouuDRFF9AeaCj5x8bxwe3lfNd+r0/OFC8+999xzfs/hnJNSQ0NDQxdwHTcxms4bTPqXxWPsh2oLGMAc5nGQ1zH22e5JVREt8CyyMJyOFqBdBKawi9vptOBuOJ/tELATDwq7V/iNwV4EXMEfLBdn43lfrM0I/gU3CrsP2D518BaRxv3UhcjI57bg10LU43TWdYDpMnicLcSbWzUE3AtnM//xZg0/0F9DwGDUwcsT2vfhO972HLwFdvCprfi6rZXI2P1UC4ft+NXJ2e6p/Y5oyTf4iS2MFXcX8RzfsIeJVBssxd+9w6/c/8VdHt1iJnyMbF2uLWAjnF/A+1zlHVr1Kp7G91htAY/CcRaRWS3u7hTTMI/ffVyqLaAPDyMTL9qLLM8JrOM1RqoGb2hoSGfEX3lxQNWsSOZGAAAAAElFTkSuQmCC">
+                    Finalizar Pedido
+                </a>
+            </div>
+            <div class="col-6 text" style="text-align: end">
+                <a class="btn btn-primary" asp-controller="Home" asp-action="Index">
+                    Continuar Comprando
+                </a>
             </div>
         </div>
+        
 
     </div>
 </div>

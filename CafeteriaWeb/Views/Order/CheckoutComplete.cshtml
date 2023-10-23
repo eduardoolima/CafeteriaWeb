@@ -1,0 +1,156 @@
+﻿@using CafeteriaWeb.ViewModel;
+@model OrderViewModel
+
+@{
+    ViewData["Title"] = "Finalizar Pedido";
+}
+
+<style>
+    .ticket__circle-count {
+        align-items: center;
+        border: 2px solid #0d6efd;
+        border-radius: 50%;
+        box-sizing: border-box;
+        color: #0d6efd;
+        display: flex;
+        flex-shrink: 0;
+        font-size: 15px;
+        height: 28px;
+        justify-content: center;
+        margin-right: 15px;
+        width: 28px;
+    }
+
+    .ticket__instruction-details {
+        color: #737373;
+        font-size: 12px;
+        margin: 32px 0 15px;
+        text-align: left;
+    }
+    .ticket__instruction-row{
+        margin-bottom:5px;
+    }
+</style>
+
+<div class="container">
+    <div class="jumbotrom">
+        <h2>@ViewBag.CheckoutMessage</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p>Cliente: <strong>@Model.Order.User.FirstName</strong></p>
+            <p>Data do Pedido: <strong>@Model.Order.OrderDispatched</strong></p>
+            <p>Número do Pedido: <strong>@Model.Order.Id</strong></p>
+
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Quantidade</th>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                </tr>
+                @foreach(var item in Model.Order.OrderItens)
+                {
+                    <tr>
+                        <td><img src="@Url.Content(item.Product.ImgThumbnailPath)" width="40" height="40" /></td>
+                        <td>@item.Amount</td>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Product.Price</td>
+                    </tr>
+                }
+            </table>
+
+            <h4>Valor Total do Pedido: <strong>@(((decimal)ViewBag.TotalOrder).ToString("C2"))</strong></h4>
+
+            @if (Model.Order.PaymentOnline)
+            {
+                if (Model.Order.PaymentMethod == CafeteriaWeb.Models.Enums.PaymentMethod.Pix)
+                {
+
+                    <div>
+                        <hr>
+                        <section>
+                            <div class="row">
+                                <div>
+                                    <h4>Pague&nbsp;@(((decimal)ViewBag.TotalOrder).ToString("C2")) via Pix</h4>
+                                </div>
+                                <div>
+                                    <span>Vencimento: 23 de outubro às 20:50 h.</span>
+                                </div></div><div class="ticket__code-instruction">
+                                <div class="ticket__code">
+                                    <div>
+                                        <strong><span>Para pagar, escolha uma destas opções:</span></strong>
+                                    </div>
+                                    <div>
+                                        <div style="text-align:center">
+                                            <div>    
+                                                <span class="ticket__small-text">Código QR</span>
+                                                <div class="ticket__qrcode-image">
+                                                    <img src="data:image/png;base64,@Model.PixQrCode" width="200" height="200" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <label class="form-label mt-4" for="inputValid">Código de pagamento</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" value="@Model.PixCopyPaste" id="copyPaste" readonly>
+                                                    <button id="btnCopy" class="btn btn-primary"><i class="fa-solid fa-copy"></i></button>                                                    
+                                                </div>
+                                                <span id="copyPasteFeedback" class="text-success"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div><h6>Como pagar?</h6></div>
+                                <div class="row ticket__instruction-row">
+                                    <div class="ticket__circle-count col-1">
+                                        <span>1</span>
+                                    </div>
+                                    <div class="col-11">
+                                        <span>Entre no app ou site do seu banco e escolha a opção de pagamento via Pix.</span>
+                                    </div>                                    
+                                </div>
+                                <div class="row ticket__instruction-row">
+                                    <div class="ticket__circle-count col-1">
+                                        <span>2</span>
+                                    </div>
+                                    <div class="col-11">
+                                        <span>Escaneie o código QR ou copie e cole o código de pagamento.</span>
+                                    </div>
+                                </div>
+                                <div class="row ticket__instruction-row">
+                                    <div class="ticket__circle-count col-1">
+                                        <span>3</span>
+                                    </div>
+                                    <div class="col-11">
+                                        <span>Pronto! O pagamento será creditado na hora e você receberá um e-mail de confirmação.</span>
+                                    </div>
+                                </div>
+                                <p class="ticket__instruction-details">O Pix tem um limite diário de transferências. Para mais informações, por favor, consulte seu banco.</p>
+                            </div>
+                        </section>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="form-group" style="text-align: center">
+    <h3>
+        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Retornar</a>
+    </h3>
+</div>
+
+<script>
+    document.getElementById("btnCopy").addEventListener("click", function () {
+        debugger
+        let copyPaste = document.getElementById("copyPaste");
+        let copyPasteFeedback = document.getElementById("copyPasteFeedback")
+        copyPaste.select(); // Seleciona o texto no campo de texto
+        document.execCommand("copy"); // Copia o texto selecionado para a área de transferência
+        copyPaste.blur(); // Remove a seleção do texto
+        copyPasteFeedback.innerHTML = "Código PIX Copiado!"
+    });
+</script>

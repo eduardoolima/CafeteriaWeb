@@ -9,9 +9,11 @@ using CafeteriaWeb.Data;
 using CafeteriaWeb.Models;
 using CafeteriaWeb.Services;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CafeteriaWeb.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

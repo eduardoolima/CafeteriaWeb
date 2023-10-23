@@ -4,6 +4,12 @@
     ViewData["Title"] = "Home";
 }
 
+<style>
+    .alert-fade-out {
+        transition: opacity 0.5s;
+    }
+</style>
+
 <div class="container">
     <div class="row d-flex justify-content-center">
         @foreach (var item in Model)
@@ -16,8 +22,8 @@
                     <p>@item.SmallDescription</p>
                     <div>
                         <p class="button">
-                            <a class="btn btn-primary" id="cartButton" asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart"
-                               asp-route-id="@item.Id">
+
+                            <a class="addToCart btn btn-primary" id="addToCartButton" data-product-id="@item.Id">
                                 Incluir no Carrinho
                             </a>
                         </p>
@@ -25,8 +31,89 @@
                 </div>
             </div>
         }
+    </div>    
+    <div id="alertContainer" style="width: 350px; position: fixed; bottom: 0; right: 0; margin: 10px; z-index:1000; display: none">
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong><i class="fa-solid fa-cart-plus fa-2xl"></i></strong> Produto Inserido no carrinho!
+        </div>
+    </div>
+
+    <div id="alertContainerError" style="width: 350px; position: fixed; bottom: 0; right: 0; margin: 10px; z-index:1000; display: none">
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong><i class="fa-solid fa-circle-exclamation fa-2xl"></i> Ops</strong> Algo deu errado, por favor tente novamente!
+        </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var keepMessage = false;
+        var isAlertVisible = localStorage.getItem('isAlertVisible');
+        var isErrorVisible = localStorage.getItem('isErrorVisible');
+        var firstAccess = localStorage.getItem('firstAccess');
+
+        if (isAlertVisible != firstAccess) {
+            $('#alertContainer').show().addClass('alert-fade-out');
+            setTimeout(function () {
+                $('#alertContainer').hide();
+            }, 5000);
+        }
+
+        if (isErrorVisible != firstAccess) {
+            $('#alertContainerError').show().addClass('alert-fade-out');
+            setTimeout(function () {
+                $('#alertContainerError').hide();
+            }, 5000);
+        }
+
+        $(".addToCart").click(function () {
+            var productId = $(this).data("product-id");
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddItemToShoppingCart/" + productId,
+                success: function (data) {
+                    localStorage.setItem('isAlertVisible', 'true');
+                    localStorage.setItem('isErrorVisible', 'false')
+                    localStorage.setItem('firstAccess', 'false');
+                    $('#alertContainer').show();
+                    keepMessage = true;
+                    location.reload();
+                },
+                error: function (error) {
+                    if (error.status == 401) {
+                        window.location.href = "/Identity/Account/Login";
+                        return;
+                    }
+                    localStorage.setItem('isErrorVisible', 'true');
+                    localStorage.setItem('isAlertVisible', 'false');
+                    localStorage.setItem('firstAccess', 'false');
+                    $('#alertContainerError').show();
+                    keepMessage = true;
+                    location.reload();
+                }
+            });
+        });
+
+        function clearLocalStorage() {
+            if (keepMessage) {
+                return;
+            }
+            localStorage.removeItem('isAlertVisible');
+            localStorage.removeItem('isErrorVisible');
+            localStorage.removeItem('firstAccess');
+        }
+
+        window.addEventListener('beforeunload', clearLocalStorage);
+
+    });
+
+</script>
+
+
 
 
 

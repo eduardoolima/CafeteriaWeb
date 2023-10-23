@@ -97,6 +97,7 @@ namespace CafeteriaWeb.Models
 
         public List<ShoppingCartItem> GetShoppingCartItems()
         {
+            var x = _context.ShoppingCartItems.Where(c => c.ShoppingCartId == Id).ToList();
             return ShoppingCartItems ??
                 (ShoppingCartItems = _context.ShoppingCartItems.Where(c => c.ShoppingCartId == Id)
                 .Include(p => p.Product).ToList());

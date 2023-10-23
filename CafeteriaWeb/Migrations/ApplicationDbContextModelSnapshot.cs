@@ -17,7 +17,7 @@ namespace CafeteriaWeb.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -164,10 +164,14 @@ namespace CafeteriaWeb.Migrations
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("ForDelivery")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Observation")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("OrderDelivered")
                         .HasColumnType("datetime2");
@@ -175,11 +179,20 @@ namespace CafeteriaWeb.Migrations
                     b.Property<DateTime>("OrderDispatched")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PaymentOnline")
+                        .HasColumnType("bit");
+
                     b.Property<int>("TotalItensOrder")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalOrder")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

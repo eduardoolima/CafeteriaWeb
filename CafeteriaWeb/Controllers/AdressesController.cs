@@ -9,9 +9,11 @@ using CafeteriaWeb.Data;
 using CafeteriaWeb.Models;
 using CafeteriaWeb.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CafeteriaWeb.Controllers
 {
+    [Authorize]
     public class AdressesController : Controller
     {
         private readonly ApplicationDbContext _context;

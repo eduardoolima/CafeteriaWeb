@@ -30,6 +30,7 @@ builder.Services.AddDefaultIdentity<User> (options => options.SignIn.RequireConf
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+builder.Services.Configure<PaymentConfiguration>(builder.Configuration);
 
 builder.Services.AddControllersWithViews();
 

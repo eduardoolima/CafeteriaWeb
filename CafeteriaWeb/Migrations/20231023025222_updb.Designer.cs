@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CafeteriaWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230927061657_addEnabled")]
-    partial class addEnabled
+    [Migration("20231023025222_updb")]
+    partial class updb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -87,6 +87,9 @@ namespace CafeteriaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -94,6 +97,9 @@ namespace CafeteriaWeb.Migrations
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifyedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -155,13 +161,20 @@ namespace CafeteriaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AdressId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("ForDelivery")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Observation")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("OrderDelivered")
                         .HasColumnType("datetime2");
@@ -169,17 +182,28 @@ namespace CafeteriaWeb.Migrations
                     b.Property<DateTime>("OrderDispatched")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PaymentOnline")
+                        .HasColumnType("bit");
+
                     b.Property<int>("TotalItensOrder")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalOrder")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdressId");
 
                     b.HasIndex("UserId");
 
@@ -209,9 +233,6 @@ namespace CafeteriaWeb.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SnackId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
@@ -229,9 +250,6 @@ namespace CafeteriaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Avaible")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -239,7 +257,6 @@ namespace CafeteriaWeb.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(280)
                         .HasColumnType("nvarchar(280)");
 
@@ -247,14 +264,10 @@ namespace CafeteriaWeb.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ImgPath")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgThumbnailPath")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAvaible")
                         .HasColumnType("bit");
@@ -338,6 +351,14 @@ namespace CafeteriaWeb.Migrations
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -548,11 +569,19 @@ namespace CafeteriaWeb.Migrations
 
             modelBuilder.Entity("CafeteriaWeb.Models.Order", b =>
                 {
+                    b.HasOne("CafeteriaWeb.Models.Adress", "Adress")
+                        .WithMany()
+                        .HasForeignKey("AdressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CafeteriaWeb.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Adress");
 
                     b.Navigation("User");
                 });

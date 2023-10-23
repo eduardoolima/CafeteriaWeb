@@ -5,26 +5,24 @@
 namespace CafeteriaWeb.Migrations
 {
     /// <inheritdoc />
-    public partial class nameAdress : Migration
+    public partial class updb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Adress",
-                type: "nvarchar(50)",
-                maxLength: 50,
-                nullable: false,
-                defaultValue: "");
+                name: "TransactionId",
+                table: "Orders",
+                type: "nvarchar(max)",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Adress");
+                name: "TransactionId",
+                table: "Orders");
         }
     }
 }

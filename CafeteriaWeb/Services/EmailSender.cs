@@ -20,8 +20,6 @@ namespace CafeteriaWeb.Services
 
         public AuthMessageSenderOptions Options { get; } //Set with Secret Manager.
 
-
-
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
             await Execute(subject, message, toEmail);        

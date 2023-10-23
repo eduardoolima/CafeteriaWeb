@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CafeteriaWeb.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,8 +10,7 @@ namespace CafeteriaWeb.Models
     {
         public int Id { get; set; }
         [Display(Name = "Observação")]
-        [StringLength(100)]
-        public string Observation { get; set; }
+        public string? Observation { get; set; }
 
         [ScaffoldColumn(false)]
         [Column(TypeName = "decimal(18,2)")]
@@ -30,13 +30,18 @@ namespace CafeteriaWeb.Models
         [DataType(DataType.Text)]
         [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? OrderDelivered { get; set; }
-
-        public List<OrderDetail> OrderItens { get; set; }
-
+        [Display(Name = "Método de Pagamento")]
+        [Required(ErrorMessage = "Selecione um método de pagamento")]
+        public PaymentMethod PaymentMethod { get; set; }
+        public bool PaymentOnline { get; set; }
+        public string? TransactionId { get; set; }
+        public bool IsPaid { get; set; }
+        public bool ForDelivery { get; set; }
+        public List<OrderDetail>? OrderItens { get; set; }
         public string UserId { get; set; }
         public virtual User User { get; set; }
         public int AdressId { get; set; }
         public virtual Adress Adress { get; set; }
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; }      
     }
 }

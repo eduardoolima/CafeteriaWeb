@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CafeteriaWeb.Data;
 using CafeteriaWeb.Models;
 using CafeteriaWeb.Services;
-using Microsoft.AspNetCore.Hosting;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Formats.Jpeg;
 using System.Globalization;
-using System.Data.SqlTypes;
+using Microsoft.AspNetCore.Authorization;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace CafeteriaWeb.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -117,7 +110,7 @@ namespace CafeteriaWeb.Controllers
                                 Size = new Size(width, heigth),
                                 Mode = ResizeMode.Max
                             }));
-                            image.Save(outputStream, new JpegEncoder());
+                            image.Save(outputStream, new PngEncoder());
                             var imageStream = new MemoryStream(outputStream.ToArray());
                             IFormFile imgThumbnail = new FormFile(imageStream, 0, imageStream.Length, "formFile", img.FileName)
                             {
@@ -220,7 +213,7 @@ namespace CafeteriaWeb.Controllers
                                 Size = new Size(width, heigth),
                                 Mode = ResizeMode.Max
                             }));
-                            image.Save(outputStream, new JpegEncoder());
+                            image.Save(outputStream, new PngEncoder());
                             var imageStream = new MemoryStream(outputStream.ToArray());
                             IFormFile imgThumbnail = new FormFile(imageStream, 0, imageStream.Length, "formFile", img.FileName)
                             {
