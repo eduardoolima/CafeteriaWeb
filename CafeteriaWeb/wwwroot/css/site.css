@@ -28,3 +28,16 @@ body {
 a:hover {
     cursor: pointer;
 }
+
+.page-card {
+    margin: 15px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.item-align-center {
+    display: flex;
+    justify-content: center; /* Alinhar horizontalmente no centro */
+    align-items: center; /* Alinhar verticalmente no centro */
+}

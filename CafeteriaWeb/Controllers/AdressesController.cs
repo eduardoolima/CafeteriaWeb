@@ -57,7 +57,8 @@ namespace CafeteriaWeb.Controllers
             if (ModelState.IsValid)
             {
                 List<Adress> adresses = new();
-                User user = _userService.FindByUserName(User.Identity.Name);                
+                //User user = _userService.FindByUserName(User.Identity.Name);                
+                var user = await _userManager.GetUserAsync(User);                
                 if (adress.Name == null)
                 {
                     adresses = _adressService.ListByUserId(user.Id);

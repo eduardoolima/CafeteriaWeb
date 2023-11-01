@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CafeteriaWeb.Models.Notification>
+
+@{
+    ViewData["Title"] = "Notificações";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-card">
+    <h1>Notificações</h1>
+
+    <div class="container">
+        <ul class="notification-list">
+            @foreach (var item in Model) {
+                <li class="notification">
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="notification-title">@Html.DisplayFor(modelItem => item.Title)</div>
+                            <div class="notification-time">@Html.DisplayFor(modelItem => item.CreatedOn)</div>
+                            <p>@Html.DisplayFor(modelItem => item.Text)</p>
+                        </div>
+                        <div class="col-1 read-indicator-align-center">
+                            @if (item.IsRead)
+                            {
+                                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-envelope-open-text"></i></a>
+                            }
+                            else
+                            {
+                                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-envelope"></i></a>
+                            }                            
+                        </div>
+                    </div>                                        
+                </li>
+            }        
+        </ul>
+    </div>
+</div>
+
+@* <script>
+    $(document).ready(function () {
+        $(".notification").click(function () {
+            // Encontre o elemento <a> dentro do <li>
+            var anchor = $(this).find("a");
+
+            // Simule o clique no <a>
+            anchor.click();
+        });
+    });
+</script> *@

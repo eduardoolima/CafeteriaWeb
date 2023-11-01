@@ -17,6 +17,7 @@ namespace CafeteriaWeb.Models
         [Required]
         public bool IsRead { get; set; }
         [Required]
+        public string UserToNotifyId { get; set; }
         public User UserToNotify { get; set; }
         [Required]
         public NotificationType NotificationType { get; set; }

@@ -1,0 +1,62 @@
+﻿/*body {
+    font-family: Arial, sans-serif;
+}*/
+
+.container {
+   /* max-width: 600px;*/
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+}
+
+.notification {
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.notification-title {
+    font-weight: bold;
+}
+
+.notification-time {
+    color: #888;
+}
+
+.unread-notifications-component {
+    color: white;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 18px;
+    height: 18px;
+    background-color: red;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+}
+
+.notification-component {
+    color: white;
+    font-size: 18px;
+}
+
+.read-indicator-align-center {
+    display: flex;
+    justify-content: center; /* Alinhar horizontalmente no centro */
+    align-items: center; /* Alinhar verticalmente no centro */
+}
+
+
+
+
+
+
+

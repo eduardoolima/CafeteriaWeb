@@ -33,14 +33,20 @@ namespace CafeteriaWeb.Models
         [Display(Name = "Método de Pagamento")]
         [Required(ErrorMessage = "Selecione um método de pagamento")]
         public PaymentMethod PaymentMethod { get; set; }
+        [Display(Name = "Pagamento")]
         public bool PaymentOnline { get; set; }
         public string? TransactionId { get; set; }
+        [Display(Name = "Pago?")]
         public bool IsPaid { get; set; }
+        [Display(Name = "Para entrega?")]
         public bool ForDelivery { get; set; }
+        public bool Finished { get; set; }
         public List<OrderDetail>? OrderItens { get; set; }
         public string UserId { get; set; }
+        [Display(Name = "Cliente")]
         public virtual User User { get; set; }
         public int AdressId { get; set; }
+        [Display(Name = "Endereço")]
         public virtual Adress Adress { get; set; }
         public bool Enabled { get; set; }      
     }

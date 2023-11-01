@@ -1,0 +1,27 @@
+﻿@using CafeteriaWeb.ViewModel;
+@model NotificationViewModel
+
+<a asp-area="" asp-controller="Notifications" asp-action="Index">
+    @{
+        int unreadNotifications = Model.User.Notifications.Where(n => !n.IsRead).ToList().Count;
+
+        string notificationsTitle = "";
+        if (unreadNotifications < 1)
+            notificationsTitle = "Notificações";
+        else if (unreadNotifications == 1)    
+            notificationsTitle = unreadNotifications.ToString() + " Notificação não lida";        
+        else        
+            notificationsTitle = unreadNotifications.ToString() + " Notificações não lidas";
+        <div style="position: relative; display: inline-block;" title="@notificationsTitle">
+            <span class="notification-component">
+                <i class="fa-solid fa-bell"></i>
+            </span>
+            @if (unreadNotifications > 0)
+            {                
+                <span class="unread-notifications-component">
+                    <span style="display: inline-block; vertical-align: top;">@unreadNotifications</span>
+                </span>        
+            }
+        </div>
+    }
+</a>

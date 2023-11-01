@@ -1,0 +1,37 @@
+﻿@model CafeteriaWeb.Models.Notification
+
+@{
+    ViewData["Title"] = "Notificação";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <h1>Notificações</h1>
+
+    <div>
+        <hr />      
+        @if (Model.NotificationType == CafeteriaWeb.Models.Enums.NotificationType.Order_Approved || Model.NotificationType == CafeteriaWeb.Models.Enums.NotificationType.NewOrder)
+        {
+            <div class="item-align-center alert alert-success">
+                <h3>@Model.Title</h3>
+            </div>
+        }   
+        else if (Model.NotificationType == CafeteriaWeb.Models.Enums.NotificationType.Order_Error || Model.NotificationType == CafeteriaWeb.Models.Enums.NotificationType.Order_Canceled)
+        {
+            <div class="item-align-center alert alert-danger">
+                <h3>@Model.Title</h3>
+            </div>
+        }
+        else
+        {
+            <div class="item-align-center alert alert-light">
+                <h3>@Model.Title</h3>
+            </div>
+        }
+        <div class="item-align-center">
+            <h4>@Model.Text</h4>
+        </div>
+    </div>
+    <div>
+        <a class="btn btn-primary" asp-controller="Home" asp-action="Index">OK <i class="fa-regular fa-circle-check"></i></a>
+    </div>
+</div>

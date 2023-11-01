@@ -1,5 +1,7 @@
 ﻿using CafeteriaWeb.Controllers;
+using CafeteriaWeb.Data;
 using CafeteriaWeb.Models;
+using CafeteriaWeb.Models.Enums;
 using CafeteriaWeb.Services;
 using CafeteriaWeb.ViewModel;
 using MercadoPago.Client.Common;
@@ -16,25 +18,34 @@ using System.Web;
 
 namespace LanchesMac.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class OrderController : Controller
     {
         private readonly OrderService _orderService;
         private readonly ShoppingCart _shoppingCart;
         private readonly AdressService _adressService;
+        private readonly NotificationService _notificationService;
+        //private readonly UserService _userService;
         private readonly UserManager<User> _userManager;
         private PaymentConfiguration _paymentConfiguration;
+        private NotificationConfiguration _notificationConfiguration;
         public OrderController(OrderService orderService,
             ShoppingCart shoppingCart,
             AdressService adressService,
+            NotificationService notificationService,
+            //UserService userService,
             UserManager<User> userManager,
-            IOptions<PaymentConfiguration> paymentConfiguration)                    
+            IOptions<PaymentConfiguration> paymentConfiguration,                 
+            IOptions<NotificationConfiguration> notificationConfiguration)                    
         {
             _orderService = orderService;
             _shoppingCart = shoppingCart;
             _adressService = adressService;
+            _notificationService = notificationService;
+            //_userService = userService;
             _userManager = userManager;
             _paymentConfiguration = paymentConfiguration.Value;
+            _notificationConfiguration = notificationConfiguration.Value;
         }
 
         [Authorize]
@@ -48,9 +59,10 @@ namespace LanchesMac.Controllers
         [HttpPost]        
         public async Task<IActionResult> FinishOrder(Order order)
         {
+            var user = await _userManager.GetUserAsync(User);
             string currentUrl = Request.Headers["Referer"].ToString();
             string[] splitUrl = currentUrl.Split("Order");
-            string notificationUrl = splitUrl[0] + "Order/MercadoPagoWebhook";
+            string notificationUrl = splitUrl[0] + $"Order/MercadoPagoWebhook/{user.Id}";
 
             MercadoPagoConfig.AccessToken = _paymentConfiguration.MercadoPagoAccessToken;
             string copyPaste = string.Empty;
@@ -71,8 +83,7 @@ namespace LanchesMac.Controllers
             {
                 totalItensOrder += item.Amount;
                 totalPriceOrder += item.Product.Price * item.Amount;
-            }
-            var user = await _userManager.GetUserAsync(User);
+            }            
             order.TotalItensOrder = totalItensOrder;
             order.TotalOrder = totalPriceOrder;
             order.User = user;
@@ -85,19 +96,18 @@ namespace LanchesMac.Controllers
                     TransactionAmount = totalPriceOrder,
                     Description = _paymentConfiguration.PixDescription,
                     PaymentMethodId = "pix",
-                    //NotificationUrl = "https://46c5-187-86-96-94.ngrok-free.app/webhook/receber-notificacoes",
+                    DateOfExpiration = DateTime.Now.AddMinutes(15),
                     NotificationUrl = notificationUrl,
                     Payer = new PaymentPayerRequest
-                    {
+                    {                        
                         Email = user.Email,
                         FirstName = user.FirstName,
-                        LastName = user.LastName                     
+                        LastName = user.LastName,
                     },
                 };
 
                 var client = new PaymentClient();
                 Payment payment = await client.CreateAsync(request);
-
                 copyPaste = payment.PointOfInteraction.TransactionData.QrCode;
                 qrCode = payment.PointOfInteraction.TransactionData.QrCodeBase64;
                 url = payment.PointOfInteraction.TransactionData.TicketUrl;
@@ -109,21 +119,19 @@ namespace LanchesMac.Controllers
                 PixCopyPaste = copyPaste,
                 PixQrCode = qrCode,
             };
-            //if (ModelState.IsValid)
-            //{
+
             _orderService.CreateOrder(order);
             ViewBag.CheckoutMessage = "Obrigado pelo seu pedido :)";
             ViewBag.TotalOrder = _shoppingCart.GetShoppingCartTotal();
 
             _shoppingCart.ClearShoppingCart();
             return View("~/Views/Order/CheckoutComplete.cshtml", orderViewModel);
-            //}
-            //ListAdress();
-            //return View(order);
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> MercadoPagoWebhook()
+        [Route("Order/MercadoPagoWebhook/{userId}")]
+        public async Task<IActionResult> MercadoPagoWebhook(string userId)
         {
             using (StreamReader reader = new(Request.Body))
             {
@@ -132,9 +140,9 @@ namespace LanchesMac.Controllers
                 if (jsonData != null)
                 {
                     if (jsonData.action == "payment.updated")
-                    {                       
+                    {                        
                         string paymentid = jsonData.data.id;
-                        await GetPaymentStatus(paymentid);
+                        await GetPaymentStatus(paymentid, userId);                        
                     }
                 }              
             }
@@ -142,40 +150,69 @@ namespace LanchesMac.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> GetPaymentStatus(string paymentId)
+        public async Task<IActionResult> GetPaymentStatus(string paymentId, string userId)
         {
-            MercadoPagoConfig.AccessToken = _paymentConfiguration.MercadoPagoAccessToken;
-            string apiUrl = "https://api.mercadopago.com/v1/payments/{id}";
-            string accessToken = MercadoPagoConfig.AccessToken;
-
-            using (HttpClient client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-
-                string transactionId = paymentId;
-
-                string fullUrl = apiUrl.Replace("{id}", transactionId);
-
-                HttpResponseMessage response = await client.GetAsync(fullUrl);
-
-                if (response.IsSuccessStatusCode)
+                MercadoPagoConfig.AccessToken = _paymentConfiguration.MercadoPagoAccessToken;
+                string apiUrl = "https://api.mercadopago.com/v1/payments/{id}";
+                string accessToken = MercadoPagoConfig.AccessToken;
+                int notificationId = 0;
+                using (HttpClient client = new HttpClient())
                 {
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic? jsonData = JsonConvert.DeserializeObject(responseBody);
-                    if (jsonData.status == "approved")
-                    {
-                        Order order = await _orderService.FindByTransactionIdAsync(paymentId);
-                        order.IsPaid = true;
-                        await _orderService.UpdateAsync(order);
-                        Console.WriteLine("Pagamento " + jsonData.status);
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+                    string fullUrl = apiUrl.Replace("{id}", paymentId);
+
+                    HttpResponseMessage response = await client.GetAsync(fullUrl);
+                    User user = await _userManager.FindByIdAsync(userId);                    
+                    if (response.IsSuccessStatusCode)
+                    {                        
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        dynamic? jsonData = JsonConvert.DeserializeObject(responseBody);
+                        if (jsonData.status == "approved")
+                        {
+                            Order order = await _orderService.FindByTransactionIdAsync(paymentId);
+                            order.IsPaid = true;
+                            await _orderService.UpdateAsync(order);
+
+                            Notification notificationNewOrder = new()
+                            {
+                                NotificationType = NotificationType.Order_Approved,
+                                UserToNotify = user,
+                                UserToNotifyId = user.Id,
+                                Title = _notificationConfiguration.NotificationApprovedTitle,
+                                Text = _notificationConfiguration.NotificationApprovedText
+                            };
+
+                            _notificationService.CreateNotification(notificationNewOrder);
+                            notificationId = notificationNewOrder.Id;
+                            Console.WriteLine("Pagamento " + jsonData.status);
+                        }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Erro na solicitação. Status Code: " + response.StatusCode);
-                }
+                    else
+                    {
+                        Notification notificationErrorOrder = new()
+                        {
+                            NotificationType = NotificationType.Order_Approved,
+                            UserToNotify = user,
+                            UserToNotifyId = user.Id,
+                            Title = _notificationConfiguration.NotificationRepprovedTitle,
+                            Text = _notificationConfiguration.NotificationRepprovedText
+                        };
+
+                        _notificationService.CreateNotification(notificationErrorOrder);
+                        notificationId = notificationErrorOrder.Id;
+                        Console.WriteLine("Erro na solicitação. Status Code: " + response.StatusCode);
+                    }
+                }                
+                return Redirect($"Notifications/Edit/{notificationId}");
             }
-            return Ok();
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         void ListAdress()

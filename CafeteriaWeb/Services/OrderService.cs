@@ -51,6 +51,7 @@ namespace CafeteriaWeb.Services
 
         public void CreateOrder(Order order)
         {
+            order.Enabled = true;
             order.OrderDispatched = DateTime.Now;
             _context.Orders.Add(order);
             _context.SaveChanges();
