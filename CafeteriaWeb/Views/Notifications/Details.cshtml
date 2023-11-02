@@ -4,7 +4,7 @@
     ViewData["Title"] = "Notificação";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div>
+<div class="page-card">
     <h1>Notificações</h1>
 
     <div>
@@ -31,7 +31,20 @@
             <h4>@Model.Text</h4>
         </div>
     </div>
+    <br />
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <a class="btn btn-primary" asp-controller="Home" asp-action="Index">OK <i class="fa-regular fa-circle-check"></i></a>
+            </div>
+        </div>
+        <div class="col-6 text" style="text-align: end">
+            <div class="form-group">
+                <a class="btn btn-secondary ml-2" asp-action="Index">Notificações</a>
+            </div>
+        </div>
+    </div>
     <div>
-        <a class="btn btn-primary" asp-controller="Home" asp-action="Index">OK <i class="fa-regular fa-circle-check"></i></a>
+        
     </div>
 </div>

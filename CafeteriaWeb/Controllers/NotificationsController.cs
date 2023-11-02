@@ -47,7 +47,7 @@ namespace CafeteriaWeb.Controllers
             {
                 return NotFound();
             }
-
+            await _notificationService.ReadNotificationAsync(notification);
             return View(notification);
         }
     }

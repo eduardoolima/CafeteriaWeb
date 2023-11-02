@@ -4,24 +4,25 @@
     ViewData["Title"] = "Gerar códigos de recuperação de autenticação de dois fatores (2FA)";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
-
-<partial name="_StatusMessage" for="StatusMessage" />
-<h3>@ViewData["Title"]</h3>
-<div class="alert alert-warning" role="alert">
-    <p>
-        <span class="glyphicon glyphicon-warning-sign"></span>
-        <strong>Guarde esses códigos em um lugar seguro.</strong>
-    </p>
-    <p>
-        Se você perder seu dispositivo e não tiver os códigos de recuperação, perderá o acesso à sua conta.
-    </p>
-    <p>
-        Gerar novos códigos de recuperação não altera as chaves usadas em aplicativos autenticadores. Se você deseja alterar a chave
-        usada em um aplicativo autenticador, você deve <a asp-page="./ResetAuthenticator">redefinir suas chaves autenticadoras.</a>
-    </p>
-</div>
-<div>
-    <form method="post">
-        <button class="btn btn-danger" type="submit">Gerar Códigos de Recuperação</button>
-    </form>
+<div class="page-card">
+    <partial name="_StatusMessage" for="StatusMessage" />
+    <h3>@ViewData["Title"]</h3>
+    <div class="alert alert-warning" role="alert">
+        <p>
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            <strong>Guarde esses códigos em um lugar seguro.</strong>
+        </p>
+        <p>
+            Se você perder seu dispositivo e não tiver os códigos de recuperação, perderá o acesso à sua conta.
+        </p>
+        <p>
+            Gerar novos códigos de recuperação não altera as chaves usadas em aplicativos autenticadores. Se você deseja alterar a chave
+            usada em um aplicativo autenticador, você deve <a asp-page="./ResetAuthenticator">redefinir suas chaves autenticadoras.</a>
+        </p>
+    </div>
+    <div>
+        <form method="post">
+            <button class="btn btn-danger" type="submit">Gerar Códigos de Recuperação</button>
+        </form>
+    </div>
 </div>

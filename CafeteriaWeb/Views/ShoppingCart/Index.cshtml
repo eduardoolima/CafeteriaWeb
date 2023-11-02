@@ -4,75 +4,74 @@
 @{
     ViewData["Title"] = "Carrinho";
 }
-
-<div class="container">
-    <div class="row">                
-        <div>
-            <h3><i class="fa-solid fa-cart-shopping"></i> Seu carrinho de compras: </h3>
-        </div>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Quantidade</th>
-                    <th>Produto</th>
-                    <th class="text-right">Preço</th>
-                    <th class="text-right">SubTotal</th>
-                    <th class="text-center">
-                        <a class="text-danger" asp-controller="ShoppingCart" asp-action="ClearFromShoppingCart" data-bs-toggle="tooltip" data-bs-placement="top" title="Esvaziar Carrinho"><i class="fa-regular fa-trash-can"></i></a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var item in Model.ShoppingCart.ShoppingCartItems)
-                {
+<div class="page-card">
+    <div class="container page">
+        <div class="row">                
+            <div>
+                <h3><i class="fa-solid fa-cart-shopping"></i> Seu carrinho de compras: </h3>
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
                     <tr>
-                        <td class="text-center">
-                            <div class="row">
-                                <div class="col-4 text-left">
-                                    <a class="text-primary" asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart" asp-route-id="@item.Product.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Adicionar"><i class="fa-solid fa-circle-plus"></i></a>
-                                </div>
-                                <div class="col-4 text-right">
-                                    @item.Amount
-                                </div>
-                                <div class="col-4">
-                                    <a class="text-secondary" asp-controller="ShoppingCart" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Product.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover"><i class="fa-solid fa-circle-minus"></i></a>
-                                </div>
-                            </div>                                                                                                                
-                        </td>
-                        <td class="text-left">@item.Product.Name</td>
-                        <td class="text-right">@item.Product.Price.ToString("c")</td>
-                        <td class="text-right">@((item.Amount * item.Product.Price).ToString("c"))</td>
-                        <td class="text-center">
-                            <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveAllProductFromShoppingCart" asp-route-id="@item.Product.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Todos @item.Product.Name"><i class="fa-solid fa-circle-xmark"></i></a>
-                        </td>
+                        <th>Quantidade</th>
+                        <th>Produto</th>
+                        <th class="text-right">Preço</th>
+                        <th class="text-right">SubTotal</th>
+                        <th class="text-center">
+                            <a class="text-danger" asp-controller="ShoppingCart" asp-action="ClearFromShoppingCart" data-bs-toggle="tooltip" data-bs-placement="top" title="Esvaziar Carrinho"><i class="fa-regular fa-trash-can"></i></a>
+                        </th>
                     </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="text-right">Total:</td>
-                    <td class="text-rigth">
-                        @Model.ShoppingCartTotal.ToString("c")
-                    </td>
-                    <td></td>
-                </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model.ShoppingCart.ShoppingCartItems)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <div class="row">
+                                    <div class="col-4 text-left">
+                                        <a class="text-primary" asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart" asp-route-id="@item.Product.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Adicionar"><i class="fa-solid fa-circle-plus"></i></a>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        @item.Amount
+                                    </div>
+                                    <div class="col-4">
+                                        <a class="text-secondary" asp-controller="ShoppingCart" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Product.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover"><i class="fa-solid fa-circle-minus"></i></a>
+                                    </div>
+                                </div>                                                                                                                
+                            </td>
+                            <td class="text-left">@item.Product.Name</td>
+                            <td class="text-right">@item.Product.Price.ToString("c")</td>
+                            <td class="text-right">@((item.Amount * item.Product.Price).ToString("c"))</td>
+                            <td class="text-center">
+                                <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveAllProductFromShoppingCart" asp-route-id="@item.Product.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Todos @item.Product.Name"><i class="fa-solid fa-circle-xmark"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-right">Total:</td>
+                        <td class="text-rigth">
+                            @Model.ShoppingCartTotal.ToString("c")
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
 
-        <div class="row">
-            <div class="col-6">
-                <a class="btn btn-success" asp-controller="Order" asp-action="FinishOrder">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABaElEQVR4nO3UP0iWURTH8VsphIsNTrboIARBS1vh4NAiJTjq4CgNglu1VXsUbrk0NClEINHkIChOOouuDRFF9AeaCj5x8bxwe3lfNd+r0/OFC8+999xzfs/hnJNSQ0NDQxdwHTcxms4bTPqXxWPsh2oLGMAc5nGQ1zH22e5JVREt8CyyMJyOFqBdBKawi9vptOBuOJ/tELATDwq7V/iNwV4EXMEfLBdn43lfrM0I/gU3CrsP2D518BaRxv3UhcjI57bg10LU43TWdYDpMnicLcSbWzUE3AtnM//xZg0/0F9DwGDUwcsT2vfhO972HLwFdvCprfi6rZXI2P1UC4ft+NXJ2e6p/Y5oyTf4iS2MFXcX8RzfsIeJVBssxd+9w6/c/8VdHt1iJnyMbF2uLWAjnF/A+1zlHVr1Kp7G91htAY/CcRaRWS3u7hTTMI/ffVyqLaAPDyMTL9qLLM8JrOM1RqoGb2hoSGfEX3lxQNWsSOZGAAAAAElFTkSuQmCC">
-                    Finalizar Pedido
-                </a>
-            </div>
-            <div class="col-6 text" style="text-align: end">
-                <a class="btn btn-primary" asp-controller="Home" asp-action="Index">
-                    Continuar Comprando
-                </a>
-            </div>
+            <div class="row">
+                <div class="col-6">
+                    <a class="btn btn-success" asp-controller="Order" asp-action="FinishOrder">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABaElEQVR4nO3UP0iWURTH8VsphIsNTrboIARBS1vh4NAiJTjq4CgNglu1VXsUbrk0NClEINHkIChOOouuDRFF9AeaCj5x8bxwe3lfNd+r0/OFC8+999xzfs/hnJNSQ0NDQxdwHTcxms4bTPqXxWPsh2oLGMAc5nGQ1zH22e5JVREt8CyyMJyOFqBdBKawi9vptOBuOJ/tELATDwq7V/iNwV4EXMEfLBdn43lfrM0I/gU3CrsP2D518BaRxv3UhcjI57bg10LU43TWdYDpMnicLcSbWzUE3AtnM//xZg0/0F9DwGDUwcsT2vfhO972HLwFdvCprfi6rZXI2P1UC4ft+NXJ2e6p/Y5oyTf4iS2MFXcX8RzfsIeJVBssxd+9w6/c/8VdHt1iJnyMbF2uLWAjnF/A+1zlHVr1Kp7G91htAY/CcRaRWS3u7hTTMI/ffVyqLaAPDyMTL9qLLM8JrOM1RqoGb2hoSGfEX3lxQNWsSOZGAAAAAElFTkSuQmCC">
+                        Finalizar Pedido
+                    </a>
+                </div>
+                <div class="col-6 text" style="text-align: end">
+                    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">
+                        Continuar Comprando
+                    </a>
+                </div>
+            </div>       
         </div>
-        
-
     </div>
 </div>

@@ -7,12 +7,12 @@
 <div class="page-card">
     <h1>Categorias</h1>
 
-    @*<p>
-        <a class="btn btn-primary" asp-action="Create">Criar nova</a>
-    </p>*@
-    <table class="table">
+    <p>
+        <a href="#" id="create-button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Criar nova">Nova Categoria</a>
+    </p>
+    <table class="table table-hover">
         <thead>
-            <tr>
+            <tr class="table-active">
                 <th>
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
@@ -26,7 +26,7 @@
                     @Html.DisplayNameFor(model => model.ModifyedOn)
                 </th>
                 <th>
-                    <a href="#" id="create-button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Criar nova"><i class="fa-solid fa-plus"></i></a>                
+                    @* <a href="#" id="create-button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Criar nova"><i class="fa-solid fa-plus"></i></a> *@
                 </th>
             </tr>
         </thead>
@@ -46,8 +46,8 @@
                     @Html.DisplayFor(modelItem => item.ModifyedOn)
                 </td>
                 <td>
-                        <a href="#" id="edit" data-id="@item.Id" class="edit-button text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a> <strong>|</strong>
-                        <a href="#" id="delete-button" data-id="@item.Id" class="delete-button text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
+                    <a href="#" id="edit" data-id="@item.Id" class="edit-button btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="#" id="delete-button" data-id="@item.Id" class="delete-button btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
                 </td>
             </tr>
     }

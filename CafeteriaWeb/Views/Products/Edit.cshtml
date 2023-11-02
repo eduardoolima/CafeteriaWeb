@@ -25,94 +25,96 @@
     }
 </style>
 
-<h1>Cadastrar Produto</h1>
+<div class="page-card">
+    <h1>Cadastrar Produto</h1>
 
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <partial name="_StatusMessage" for="StatusMessage" />
-        <form asp-action="Edit" enctype="multipart/form-data" onsubmit="return validateForm()">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row">
-@*                <input asp-for="ImgPathOld" type="hidden" />
-                <input asp-for="ImgThumbnailPathOld" type="hidden" />*@
-                <div class="form-group col-3 mb-3">
-                    <img id="imgProduct" src="@Url.Content(Model.ImgPath)" height="200" width="200" />
-                    <label style="width:200px;border-radius: 0;" for="img" title="Apenas PNG, JPE e JPEG" class="control-label btn btn-primary">Imagem <i class="fa-regular fa-image"></i></label>
-                    <input asp-for="ImgPath" type="file" accept=".jpg, .jpeg, .png" id="img" name="img"
-                           onchange="document.getElementById('imgProduct').src = window.URL.createObjectURL(this.files[0])" />
-                    <span id="validadtionImg" class="text-danger" style="display: block;"></span>
-                    <div id="fileInfo" class="file-info">
-                        <div>
-                            <p><strong>Nome do arquivo:</strong> <span id="fileName"></span></p>
-                            <p><strong>Tamanho do arquivo:</strong> <span id="fileSize"></span></p>
-                            <p><strong>Tipo de arquivo:</strong> <span id="fileType"></span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-9">
-                    <div class="col-md-2" style="display: flex; align-items: center; margin-top: 20px;">
-                        <div class="form-group form-check form-switch">
-                            <label class="form-check-label">
-                                @Html.DisplayNameFor(model => model.IsFavorite) <input class="form-check-input" asp-for="IsFavorite" />
-                            </label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-7">
-                            <label asp-for="Name" class="control-label"></label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label asp-for="Price" class="control-label">Preço</label>
-                            <div class="input-group">
-                                <span class="input-group-text">R$</span>
-                                <input asp-for="Price" class="form-control money-mask" />
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <partial name="_StatusMessage" for="StatusMessage" />
+            <form asp-action="Edit" enctype="multipart/form-data" onsubmit="return validateForm()">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+    @*                <input asp-for="ImgPathOld" type="hidden" />
+                    <input asp-for="ImgThumbnailPathOld" type="hidden" />*@
+                    <div class="form-group col-3 mb-3">
+                        <img id="imgProduct" src="@Url.Content(Model.ImgPath)" height="200" width="200" />
+                        <label style="width:200px;border-radius: 0;" for="img" title="Apenas PNG, JPE e JPEG" class="control-label btn btn-primary">Imagem <i class="fa-regular fa-image"></i></label>
+                        <input asp-for="ImgPath" type="file" accept=".jpg, .jpeg, .png" id="img" name="img"
+                               onchange="document.getElementById('imgProduct').src = window.URL.createObjectURL(this.files[0])" />
+                        <span id="validadtionImg" class="text-danger" style="display: block;"></span>
+                        <div id="fileInfo" class="file-info">
+                            <div>
+                                <p><strong>Nome do arquivo:</strong> <span id="fileName"></span></p>
+                                <p><strong>Tamanho do arquivo:</strong> <span id="fileSize"></span></p>
+                                <p><strong>Tipo de arquivo:</strong> <span id="fileType"></span></p>
                             </div>
-                            <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
+                    </div>
+
+                    <div class="col-md-9">
                         <div class="col-md-2" style="display: flex; align-items: center; margin-top: 20px;">
                             <div class="form-group form-check form-switch">
                                 <label class="form-check-label">
-                                    @Html.DisplayNameFor(model => model.IsAvaible) <input class="form-check-input" asp-for="IsAvaible"/>
+                                    @Html.DisplayNameFor(model => model.IsFavorite) <input class="form-check-input" asp-for="IsFavorite" />
                                 </label>
                             </div>
                         </div>
-                        
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
-                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="SmallDescription" class="control-label"></label>
-                        <input asp-for="SmallDescription" class="form-control" />
-                        <span asp-validation-for="SmallDescription" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CategoryId" class="control-label">Categoria</label>
-                        <select id="ddlCategory" asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                        <span id="validationCategory" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <input type="submit" value="Gravar" class="btn btn-primary" />
+                        <div class="row">
+                            <div class="form-group col-md-7">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
+                            <div class="form-group col-md-3">
+                                <label asp-for="Price" class="control-label">Preço</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input asp-for="Price" class="form-control money-mask" />
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-2" style="display: flex; align-items: center; margin-top: 20px;">
+                                <div class="form-group form-check form-switch">
+                                    <label class="form-check-label">
+                                        @Html.DisplayNameFor(model => model.IsAvaible) <input class="form-check-input" asp-for="IsAvaible"/>
+                                    </label>
+                                </div>
+                            </div>
+                        
                         </div>
-                        <div class="col-6 text" style="text-align: end">
-                            <div class="form-group">
-                                <a class="btn btn-secondary ml-2" asp-action="Index">Voltar</a>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SmallDescription" class="control-label"></label>
+                            <input asp-for="SmallDescription" class="form-control" />
+                            <span asp-validation-for="SmallDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CategoryId" class="control-label">Categoria</label>
+                            <select id="ddlCategory" asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                            <span id="validationCategory" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="submit" value="Gravar" class="btn btn-primary" />
+                                </div>
+                            </div>
+                            <div class="col-6 text" style="text-align: end">
+                                <div class="form-group">
+                                    <a class="btn btn-secondary ml-2" asp-action="Index">Voltar</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 

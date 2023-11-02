@@ -82,22 +82,23 @@ namespace CafeteriaWeb.Services
             }
         }
 
-        public async Task ReadNotificationAsync(int id)
+        public async Task ReadNotificationAsync(Notification obj)
         {
-            var obj = _context.Notification.Find(id);
-            if (!await _context.Orders.AnyAsync(x => x.Id == obj.Id && obj.Enabled))
+            if (!_context.Notification.Any(x => x.Id == obj.Id))
             {
-                throw new Exception("Order not found");
+                throw new Exception("Notification not found");
             }
             try
             {
+                obj.ReadOn = DateTime.Now;
+                obj.IsRead = true;
                 _context.Update(obj);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
                 throw new DbUpdateConcurrencyException(e.Message);
-            }
+            }            
         }
         #endregion
 
