@@ -91,7 +91,6 @@
                 debugger
                 var id = $(this).data('id');
 
-                var id = $(this).attr("data-id");
                 $("#modal").load("/Products/Delete/" + id, function () {
                     $("#modal").modal("show");
                 })

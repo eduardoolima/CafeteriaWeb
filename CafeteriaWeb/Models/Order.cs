@@ -36,7 +36,7 @@ namespace CafeteriaWeb.Models
         [Display(Name = "Pagamento")]
         public bool PaymentOnline { get; set; }
         public string? TransactionId { get; set; }
-        [Display(Name = "Pago?")]
+        [Display(Name = "Está Pago?")]
         public bool IsPaid { get; set; }
         [Display(Name = "Para entrega?")]
         public bool ForDelivery { get; set; }
@@ -48,6 +48,9 @@ namespace CafeteriaWeb.Models
         public int AdressId { get; set; }
         [Display(Name = "Endereço")]
         public virtual Adress Adress { get; set; }
-        public bool Enabled { get; set; }      
+        public bool Enabled { get; set; }
+
+        [NotMapped]
+        public string? StatusMessage { get; set; }
     }
 }

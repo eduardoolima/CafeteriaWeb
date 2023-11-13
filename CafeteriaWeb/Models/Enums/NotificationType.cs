@@ -8,5 +8,6 @@
         Order_Error = 3,
         Discount_Coupon = 4,
         NewOrder = 5,
+        OutForDelivery = 6,
     }
 }

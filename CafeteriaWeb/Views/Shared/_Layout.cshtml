@@ -38,8 +38,8 @@
                     <span class="navbar-toggler-icon text-light"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    @* @if (User.IsInRole("Admin"))
-                    { *@
+                    @if (User.IsInRole("Admin"))
+                    {
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i></a>
@@ -54,7 +54,7 @@
                                 <a class="nav-link text-light" asp-area="Admin" asp-controller="AdminOrder" asp-action="Index">Pedidos</a>
                             </li>
                         </ul>
-                   @*  }
+                    }
                     else
                     { 
                         <ul class="navbar-nav flex-grow-1">
@@ -65,7 +65,7 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Index">Pedidos <i class="fa-solid fa-receipt"></i></a>
                             </li>
                         </ul>
-                    } *@
+                    }
                     
                     @if (SignInManager.IsSignedIn(User))
                     {

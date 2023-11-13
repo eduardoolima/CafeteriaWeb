@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Web;
@@ -19,20 +20,22 @@ using System.Web;
 namespace LanchesMac.Controllers
 {
     //[Authorize]
-    public class OrderController : Controller
+    public class OrdersController : Controller
     {
         private readonly OrderService _orderService;
         private readonly ShoppingCart _shoppingCart;
         private readonly AdressService _adressService;
         private readonly NotificationService _notificationService;
+        private readonly ProductService _productService;
         //private readonly UserService _userService;
         private readonly UserManager<User> _userManager;
         private PaymentConfiguration _paymentConfiguration;
         private NotificationConfiguration _notificationConfiguration;
-        public OrderController(OrderService orderService,
+        public OrdersController(OrderService orderService,
             ShoppingCart shoppingCart,
             AdressService adressService,
             NotificationService notificationService,
+            ProductService productService,
             //UserService userService,
             UserManager<User> userManager,
             IOptions<PaymentConfiguration> paymentConfiguration,                 
@@ -42,10 +45,46 @@ namespace LanchesMac.Controllers
             _shoppingCart = shoppingCart;
             _adressService = adressService;
             _notificationService = notificationService;
+            _productService = productService;
             //_userService = userService;
             _userManager = userManager;
             _paymentConfiguration = paymentConfiguration.Value;
             _notificationConfiguration = notificationConfiguration.Value;
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Index()
+        {
+            var userId = _userManager.GetUserId(User);
+            var orders = _orderService.ListByUser(userId);
+            return orders != null ?
+                          View(await orders) :
+                          Problem("Entity set 'ApplicationDbContext.ordes'  is null.");
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _orderService.FindByIdAsync(id.Value);
+            
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            //var orderProducts = new List<Product>();
+            foreach (var orderItem in order.OrderItens)
+            {
+                Product product = _productService.FindById(orderItem.ProductId);
+                orderItem.Product = product;
+                //orderProducts.Add(product);
+            }
+            ViewBag.TotalOrder = order.TotalOrder;
+            return View(order);
         }
 
         [Authorize]

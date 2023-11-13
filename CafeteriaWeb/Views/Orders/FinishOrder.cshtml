@@ -1,0 +1,197 @@
+﻿@model CafeteriaWeb.Models.Order
+
+@{
+    ViewData["Title"] = "Finalizar Pedido";
+}
+
+<div class="page-card">
+    <h1>Finalizar Pedido <i class="fa-solid fa-receipt"></i></h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <form asp-action="FinishOrder">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Como você gostaria de receber o seu pedido?</label><br>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" asp-for="ForDelivery" value="true" id="deliveryRadio" checked class="form-check-input">
+                                <label class="form-check-label" for="deliveryRadio">Para Entrega <i class="fa-solid fa-motorcycle"></i></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" asp-for="ForDelivery" value="false" id="pickupRadio" class="form-check-input">
+                                <label class="form-check-label" for="pickupRadio">Para Retirada no Estabelecimento <i class="fa-solid fa-store"></i></label>
+                            </div>
+                            <br />
+                            <span id="forDeliveryValidation" asp-validation-for="ForDelivery" class="text-danger"></span>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Quando pagar?</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" asp-for="PaymentOnline" value="true" id="paymentOnlineTrue" checked class="form-check-input">
+                                    <label class="form-check-label" for="paymentOnlineTrue">
+                                        Pagamento Online
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" asp-for="PaymentOnline" value="false" id="paymentOnlineFalse" class="form-check-input">
+                                    <label class="form-check-label" for="paymentOnlineFalse">
+                                        Pagar na entrega
+                                    </label>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div id="paymentMethodDiv" class="form-group">
+                                <label>Método de Pagamento</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" asp-for="PaymentMethod" value="CreditCard" id="creditCardRadio" class="form-check-input">
+                                    <label class="form-check-label" for="creditCardRadio">
+                                        Cartão de Crédito
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbklEQVR4nGNgGHDg3nq637np+B/npuP/ScR/3NtO9jGAGF17vvzvP/idJNy598t/l6YTv0EGkKwZhkF6GcwcfP9TghkoNsCZUi84Qw3ABYg2oJ9SF/QPpAF/QImC7IQESo7kJmWP1hO9A50VGRgA05kjbXH2LOMAAAAASUVORK5CYII=">
+                                        @* <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAABAElEQVR4nGNgGH4goHf+0YDe+f+Jwf698w9jGGDm4PufFMyABtzINYCFm5u7S0hI6CuxzodhBgYGBileXt4zdnZ2X169egUWBIHnz5//Dw4O/i8oKPi/o6PjPzYANoCLi+vDoUOH/v79+xci2DPvv3tt739hadn/FVVV/y9fvvyfnZMLtwsOHjyIYqq1u9d/DW3t/6dOnfr//v37/+6eXv+VTSxxG/AfBzh37tx/GTn5/6o2Tv/9umZjN6Bn/iGsBsyfP/8PNzf3f0ZGRlAgoWNU8B8JvH79+n9oaOh3Xl7eu1g0ghLNIWyJD66IlZX1Fx8f3zwGBgZOJA04NQ4OAAAVd1S18ne2ggAAAABJRU5ErkJggg=="> *@
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline" style="display:none;">
+                                    <input type="radio" asp-for="PaymentMethod" value="Cash" id="cashRadio" class="form-check-input">
+                                    <label class="form-check-label" for="cashRadio">
+                                        Dinheiro
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAABZklEQVR4nLWSwUsCQRTG/Uv6Z1J0a7sEnSJvsZCHDkpEhawb2CGICCw3V9PKaGmlLlaoewmizDwEga5aCR2y6FARumbwxWyySKuggQ8eb4Y332++N4zJ1M9Ynx2kBdam+OctdVJ9c+bhnsRBlvosnbrwdsWBVLLvGiKwNoWIaoVtNF5vUL31oXTiRHiRqiUDVF3eoi+TvHmgI8C/YFHJzTUlgsZzGurdAd7THmy6ragqPPJx5lsO0RcdAQG39dcBAbxkoBb3NAfi8ii+HiV8ZDikBErVDtuFGfzN6TUGAY7WRMRJ8diJEDeE850JVHMbyMUZyMGmAyJIlGVDHp7xiKyMg3dTWj1KrUKOTSIZGsF+cAz6G9jbAMLXIqZ2PXBEWYSzoqFPNPq89ibAKXnhkrzamggLlTKUygMcUY+h3xbgIgdiSzqAiPNP9zqgtd8WkGgdIStqECLueoRED2kA/Ce7+tJ9jx8pA731JTI4rQAAAABJRU5ErkJggg==">
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" asp-for="PaymentMethod" value="Pix" id="pixRadio" class="form-check-input">
+                                    <label class="form-check-label" for="pixRadio">
+                                        Pix
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAABMElEQVR4nLVSTUvDQBDNH7V192Iwl2gw2RQ/EvToR6/SZCNtia3oxeAHgmf/QQ968RdowU3qoTTyWrdGyGoDOjAwbOa9zLw3mvZfQULHItwdTjN0rGrgyD0wYk9cDJIciXqZNw4XAtMTtm/E/lvydJvfPd9PE7Vx6gvK3aMfwUstp19v2WOzt5dePt7MCVCbvd20FmyMa4F9phx7tbsj/OtmSjgbrbS3MgCRens7w5t31czQg97v4NCxsKcc+/ihM5EkemdzhBpv83ViT9CArRf+zoYQS448I+lOSOS+I1EXv6GXcPb6RcDdUgKqIDgfJDnljZe/W6FMRL0o4ieJUkQZsAg2rpXZ2J/ZCKu136/QLzkkT9CILXaNOFt5yhAMtXJsVUAkWAW165FtVgJXiQ9Gh3FyAJ4+PAAAAABJRU5ErkJggg==">
+                                    </label>
+                                </div>
+                                <br />
+                                <span id="paymentValidationMessage" asp-validation-for="PaymentMethod" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="row" id="addressDiv">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label asp-for="AdressId" class="control-label"><i class="fa-solid fa-location-dot"></i> Onde entregar?</label>
+                            <select id="adressToDelivery" asp-for="AdressId" class="form-control" asp-items="ViewBag.Adresses"></select>
+                            <span id="AdressValidation" asp-validation-for="Observation" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label asp-for="Observation" class="control-label"></label>
+                            <textarea asp-for="Observation" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Observation" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success" onclick="return validateForm()">
+                                <i class="fa-regular fa-circle-check"></i> Confirmar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-6 text" style="text-align: end">
+                        <a class="btn btn-warning" asp-controller="ShoppingCart" asp-action="Index"><i class="fa-solid fa-cart-shopping"></i> Retornar ao Carrinho</a>
+                        &nbsp;
+                        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">
+                            Continuar Comprando
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    function validateForm() {
+        debugger
+        let deliveryRadio = document.getElementById("deliveryRadio");
+        let pickupRadio = document.getElementById("pickupRadio");
+        let forDeliveryValidation = document.getElementById("forDeliveryValidation");
+        let isFormValid = true
+        if (!deliveryRadio.checked && !pickupRadio.checked) {
+            forDeliveryValidation.innerHTML = 'Selecione um método de entrega';
+            isFormValid = false;
+        }
+
+        if (deliveryRadio.checked) {
+            let adressToDelivery = document.getElementById('adressToDelivery')
+            if (adressToDelivery.value == 0) {
+                let AdressValidation = document.getElementById('AdressValidation')
+                AdressValidation.innerHTML = "Selecione um endereço para entrega"
+                isFormValid = false;
+            }
+        }
+        debugger
+        let creditCardRadio = document.getElementById("creditCardRadio");
+        let cashRadio = document.getElementById("cashRadio");
+        let pixRadio = document.getElementById("pixRadio");
+        let paymentValidationMessage = document.getElementById("paymentValidationMessage");
+
+        if (!creditCardRadio.checked && !cashRadio.checked && !pixRadio.checked) {
+            paymentValidationMessage.innerHTML = 'Selecione um método de pagamento';
+            isFormValid = false;
+        }
+
+        return isFormValid;
+    }
+
+    $(document).ready(function () {
+        var deliveryRadio = document.getElementById("deliveryRadio");
+        var pickupRadio = document.getElementById("pickupRadio");
+        var addressDiv = document.getElementById("addressDiv");
+        var paymentMethodDiv = document.getElementById("paymentMethodDiv");
+
+        deliveryRadio.addEventListener("change", function () {            
+            addressDiv.style.display = "block";
+            paymentMethodDiv.style.display = "block";
+        });
+
+        pickupRadio.addEventListener("change", function () {
+            addressDiv.style.display = "none";
+            paymentMethodDiv.style.display = "none";
+        });        
+
+
+        // Oculta a opção "Dinheiro" quando "Pagamento Online" é selecionado
+        $('#paymentOnlineTrue').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#cashRadio').closest('.form-check').hide();
+            }
+        });
+
+        // Exibe a opção "Dinheiro" quando "Pagar na entrega" é selecionado
+        $('#paymentOnlineFalse').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#cashRadio').closest('.form-check').show();
+            }
+        });
+    });
+    
+</script>

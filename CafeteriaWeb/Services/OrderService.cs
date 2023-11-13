@@ -21,22 +21,22 @@ namespace CafeteriaWeb.Services
 
         public List<Order> ListAll()
         {            
-            return _context.Orders.Where(obj => obj.Enabled).ToList();
+            return _context.Orders.Include(obj => obj.User).Include(obj => obj.Adress).Where(obj => obj.Enabled).ToList();
         }
 
         public async Task<List<Order>> ListByUser(string userId)
         {
-            return await _context.Orders.Where(obj => obj.Enabled && obj.UserId == userId).ToListAsync();
+            return await _context.Orders.Include(a => a.Adress).Where(obj => obj.Enabled && obj.UserId == userId).ToListAsync();
         }
 
         public async Task<Order> FindByIdAsync(int id)
         {
-            return await _context.Orders.FirstOrDefaultAsync(obj => obj.Id == id && obj.Enabled);
+            return await _context.Orders.Include(u => u.User).Include(a => a.Adress).Include(i => i.OrderItens).FirstOrDefaultAsync(obj => obj.Id == id && obj.Enabled);
         }
 
         public Order FindById(int id)
         {
-            return _context.Orders.FirstOrDefault(obj => obj.Id == id && obj.Enabled);
+            return _context.Orders.Include(obj => obj.User).Include(a => a.Adress).FirstOrDefault(obj => obj.Id == id && obj.Enabled);
         }
 
         public async Task<Order> FindByTransactionIdAsync(string transactionId)
@@ -106,6 +106,36 @@ namespace CafeteriaWeb.Services
                 throw new DbUpdateConcurrencyException(e.Message);
             }
         }
+
+        public async Task FinishOrderAsync(int id)
+        {
+            var obj = _context.Orders.Find(id) ?? throw new Exception("Order not found");
+            try
+            {
+                obj.Finished = true;
+                _context.Update(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new DbUpdateConcurrencyException(e.Message);
+            }
+        }
+
+        public async Task OutForDeliveryAsync(int id)
+        {
+            var obj = _context.Orders.Find(id) ?? throw new Exception("Order not found");
+            try
+            {
+                obj.OrderDelivered = DateTime.Now;
+                _context.Update(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new DbUpdateConcurrencyException(e.Message);
+            }
+        }
         #endregion
 
         #region delete
@@ -119,7 +149,8 @@ namespace CafeteriaWeb.Services
         public async Task RemoveAsync(int id)
         {
             var obj = await _context.Orders.FindAsync(id);
-            _context.Orders.Remove(obj);
+            obj.Enabled = false;
+            _context.Orders.Update(obj);
             await _context.SaveChangesAsync();
         }
         #endregion

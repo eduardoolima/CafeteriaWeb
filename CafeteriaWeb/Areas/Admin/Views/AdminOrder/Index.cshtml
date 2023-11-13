@@ -1,93 +1,131 @@
 ﻿@model IEnumerable<CafeteriaWeb.Models.Order>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pedidos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="page-card">
+    <h1>Pedidos</h1>
 
-<h1>Index</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-active">
+                <th title="N° do Pedido">
+                    #
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Adress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDispatched)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDelivered)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsPaid)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ForDelivery)
+                </th>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Observation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDispatched)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDelivered)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentMethod)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentOnline)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsPaid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ForDelivery)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Adress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Enabled)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDispatched)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDelivered)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentMethod)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentOnline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransactionId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPaid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ForDelivery)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Adress.Cep)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Enabled)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FirstName)&nbsp;@Html.DisplayFor(modelItem => item.User.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Adress.Street)&nbsp;@Html.DisplayFor(modelItem => item.Adress.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDispatched)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDelivered)
+                    </td>
+                    <td>
+                        <span>R$</span>@Html.DisplayFor(modelItem => item.TotalOrder)
+                    </td>
+                    <td>
+                        @if (item.IsPaid)
+                        {
+                            <span>Sim <i class="text-success fa-solid fa-circle-check"></i></span>
+                        }
+                        else
+                        {
+                            <span>Não <i class="text-danger fa-solid fa-circle-xmark"></i></span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.ForDelivery)
+                        {
+                            <span>Sim <i class="text-success fa-solid fa-circle-check"></i></span>
+                        }
+                        else
+                        {
+                            <span>Não <i class="text-danger fa-solid fa-circle-xmark"></i></span>
+                        }
+                    </td>
+                    <td>
+                        <a class="btn btn-success finish-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Finalizar Pedido"><i class="fa-solid fa-clipboard-check"></i></a>
+                        <a class="btn btn-primary outDelivery-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Saiu para entrega"><i class="fa-solid fa-motorcycle"></i></a>
+                        <a class="btn btn-danger delete-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            $('.delete-button').click(function () {
+                debugger
+                var id = $(this).data('id');
+
+                $("#modal").load("/Admin/AdminOrder/Delete/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.finish-button').click(function () {
+                debugger
+                var id = $(this).data('id');
+
+                $("#modal").load("/Admin/AdminOrder/FinishOrder/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.outDelivery-button').click(function () {
+                debugger
+                var id = $(this).data('id');
+
+                $("#modal").load("/Admin/AdminOrder/OutForDelivery/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>

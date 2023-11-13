@@ -10,5 +10,7 @@ namespace CafeteriaWeb.Services
         public string? NotificationRepprovedText { get; set; }
         public string? NotificationNewOrderTitle { get; set; }
         public string? NotificationNewOrderText { get; set; }
+        public string? NotificationOutForDeliveryTitle { get; set; }
+        public string? NotificationOutForDeliveryText { get; set; }
     }
 }

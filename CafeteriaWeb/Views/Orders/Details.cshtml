@@ -1,0 +1,42 @@
+﻿@model CafeteriaWeb.Models.Order
+
+@{
+    ViewData["Title"] = "Detalhes do Pedido";
+}
+
+<div class="page-card">
+    <h1>Detalhes do pedido</h1>
+    <hr />
+    <div class="container">
+        
+        <p>Cliente: <strong>@Model.User.FirstName</strong></p>
+        <p>Data do Pedido: <strong>@Model.OrderDispatched</strong></p>
+        <p>Número do Pedido: <strong>@Model.Id</strong></p>
+
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>Quantidade</th>
+                <th>Produto</th>
+                <th>Preço</th>
+            </tr>
+            @foreach(var item in Model.OrderItens)
+            {
+                <tr>
+                    <td><img src="@Url.Content(item.Product.ImgThumbnailPath)" width="40" height="40" /></td>
+                    <td>@item.Amount</td>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Price</td>
+                </tr>
+            }
+        </table>
+
+        <h4>Valor Total do Pedido: <strong>@(((decimal)ViewBag.TotalOrder).ToString("C2"))</strong></h4>
+            
+    </div>
+    <div class="form-group">
+        <h3>
+            <a class="btn btn-secondary" asp-controller="Orders" asp-action="Index">Retornar</a>
+        </h3>
+    </div>
+</div>

@@ -10,26 +10,28 @@
 
     <div class="container-notification">
         <ul class="notification-list">
-            @foreach (var item in Model) {
+            @foreach (var item in Model) {               
                 <li class="notification">
-                    <div class="row">
-                        <div class="col-11">
-                            <div class="notification-title">@Html.DisplayFor(modelItem => item.Title)</div>
-                            <div class="notification-time">@Html.DisplayFor(modelItem => item.CreatedOn)</div>
-                            <p>@Html.DisplayFor(modelItem => item.Text)</p>
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        <div class="row">
+                            <div class="col-11">
+                                <div class="notification-title">@Html.DisplayFor(modelItem => item.Title)</div>
+                                <div class="notification-time">@Html.DisplayFor(modelItem => item.CreatedOn)</div>
+                                <p>@Html.DisplayFor(modelItem => item.Text)</p>
+                            </div>
+                            <div class="col-1 read-indicator-align-center">
+                                @if (item.IsRead)
+                                {
+                                    <i class="text-primary fa-solid fa-envelope-open-text"></i>
+                                }
+                                else
+                                {
+                                    <i class="text-primary fa-solid fa-envelope"></i>
+                                }                            
+                            </div>
                         </div>
-                        <div class="col-1 read-indicator-align-center">
-                            @if (item.IsRead)
-                            {
-                                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-envelope-open-text"></i></a>
-                            }
-                            else
-                            {
-                                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-envelope"></i></a>
-                            }                            
-                        </div>
-                    </div>                                        
-                </li>
+                    </a>
+                </li>                
             }        
         </ul>
     </div>

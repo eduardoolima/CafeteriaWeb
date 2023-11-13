@@ -1,0 +1,73 @@
+﻿@model CafeteriaWeb.Models.Order
+
+@{
+    ViewData["Title"] = "Excluir Pedido";
+}
+
+<div class="modal-dialog adjustment-modal">
+    <div class="modal-content" style="z-index:100;">
+        <div class="modal-header">
+            <h1 class="modal-title">Excluir Pedido</h1>
+            <button type="button" class="close btn btn-danger" data-bs-dismiss="modal">
+                <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span><span class="sr-only">Fechar</span>
+            </button>
+        </div>
+        <div class="content-page" style="margin: 20px;">
+            <h4>Tem certeza que deseja excluir?</h4>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-4">
+                        <dl class="row">
+                            <dt class="col-sm-6">
+                                <span>#</span>
+                            </dt>
+                            <dd class="col-sm-7">
+                                @Html.DisplayFor(model => model.Id)
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-4">                        
+                        <dl class="row">
+                            <dt class="col-sm-6">
+                                @Html.DisplayNameFor(model => model.User)
+                            </dt>
+                            <dd class="col-sm-7">
+                                @Html.DisplayFor(model => model.User.FirstName)&nbsp;@Html.DisplayFor(model => model.User.LastName)
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-4">
+                        <dl class="row">
+                            <dt class="col-sm-6">
+                                @Html.DisplayNameFor(model => model.TotalOrder)
+                            </dt>
+                            <dd class="col-sm-7" style="text-align:left">
+                                R$@Html.DisplayFor(model => model.TotalOrder)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+    
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <input type="submit" value="Excluir" class="btn btn-danger" />
+                        </div>
+                    </div>
+                    <div class="col-6 text" style="text-align: end">
+                        <div class="form-group">
+                            <button type="button" class="close btn btn-secondary ml-2" data-bs-dismiss="modal">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    </div>
+</div>
