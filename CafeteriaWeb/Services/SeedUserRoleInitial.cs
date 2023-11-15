@@ -57,6 +57,29 @@ namespace CafeteriaWeb.Services
                     _userManager.AddToRoleAsync(user, "Admin").Wait();
                 }
             }
+            if (_userManager.FindByEmailAsync("externalClient@cafeteriaweb").Result == null)
+            {
+                User user = new()
+                {
+                    FirstName = "Cliente",
+                    LastName = "Externo",
+                    UserName = "ClienteExterno",
+                    PathPhoto = "",
+                    Email = "externalClient@cafeteriaweb",
+                    NormalizedUserName = "EXTERNALCLIENT@CAFETERIAWEB",
+                    NormalizedEmail = "EXTERNALCLIENT@CAFETERIAWEB",
+                    EmailConfirmed = true,
+                    LockoutEnabled = false,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    CreatedOn = DateTime.Now
+                };
+
+                var result = _userManager.CreateAsync(user, "@1q2w3e4r!Q@W#E$R").Result;
+                if (result.Succeeded)
+                {
+                    _userManager.AddToRoleAsync(user, "Admin").Wait();
+                }
+            }
         }
     }
 }

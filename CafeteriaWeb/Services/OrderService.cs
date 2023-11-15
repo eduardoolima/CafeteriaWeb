@@ -1,5 +1,6 @@
 ﻿using CafeteriaWeb.Data;
 using CafeteriaWeb.Models;
+using CafeteriaWeb.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace CafeteriaWeb.Services
@@ -17,6 +18,17 @@ namespace CafeteriaWeb.Services
         public async Task<List<Order>> ListAllAsync()
         {
             return await _context.Orders.Where(obj => obj.Enabled).ToListAsync();
+        }
+
+        public async Task<List<Order>> ListAllByDayAsync(DateTime date)
+        {
+            return await _context.Orders.Include(obj => obj.User).Include(obj => obj.Adress).Where(obj => obj.Enabled && obj.OrderDispatched.Date == date.Date).ToListAsync();
+        }
+
+        public async Task<List<Order>> ListAllByPeriodAsync(DateTime dateStart, DateTime dateEnd)
+        {
+            return await _context.Orders.Include(obj => obj.User).Include(obj => obj.Adress).Where(obj => obj.Enabled && obj.OrderDispatched.Date >= dateStart.Date && obj.OrderDispatched.Date <= dateEnd.Date)
+            .ToListAsync();
         }
 
         public List<Order> ListAll()
@@ -72,6 +84,28 @@ namespace CafeteriaWeb.Services
             _context.SaveChanges();
         }
 
+        public void CreateOrderAdmin(Order order, List<Products> products)
+        {
+            order.Enabled = true;
+            order.OrderDispatched = DateTime.Now;
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+
+            foreach (var item in products)
+            {
+                var orderDetail = new OrderDetail()
+                {
+                    Amount = item.Amount,
+                    ProductId = item.ProductId,
+                    OrderId = order.Id,
+                    Price = item.Price
+                };
+                _context.OrderDetails.Add(orderDetail);
+            }
+            _context.SaveChanges();
+        }
+
         #region update
         public void Update(Order obj)
         {
@@ -112,7 +146,27 @@ namespace CafeteriaWeb.Services
             var obj = _context.Orders.Find(id) ?? throw new Exception("Order not found");
             try
             {
+                if(obj.OrderDelivered == null)
+                {
+                    obj.OrderDelivered = DateTime.Now;
+                }
                 obj.Finished = true;
+                obj.IsPaid = true;
+                _context.Update(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new DbUpdateConcurrencyException(e.Message);
+            }
+        }
+
+        public async Task MarkOrderAsPayedAsync(int id)
+        {
+            var obj = _context.Orders.Find(id) ?? throw new Exception("Order not found");
+            try
+            {
+                obj.IsPaid = true;
                 _context.Update(obj);
                 await _context.SaveChangesAsync();
             }

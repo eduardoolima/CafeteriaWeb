@@ -22,5 +22,7 @@ namespace CafeteriaWeb.Models
         public DateTime ModifyedOn { get; set; }
         public ICollection<Notification>? Notifications { get; set; }
         public bool Enabled { get; set; }
+        [NotMapped]
+        public string? CompleteName { get; set; }
     }
 }

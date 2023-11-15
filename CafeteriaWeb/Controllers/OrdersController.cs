@@ -127,7 +127,7 @@ namespace LanchesMac.Controllers
             order.TotalOrder = totalPriceOrder;
             order.User = user;
             order.UserId = user.Id;
-            order.Adress = _adressService.FindById(order.AdressId);            
+            order.Adress = _adressService.FindById(order.AdressId.Value);            
             if (order.PaymentOnline && order.PaymentMethod == CafeteriaWeb.Models.Enums.PaymentMethod.Pix)
             {
                 var request = new PaymentCreateRequest
@@ -257,9 +257,9 @@ namespace LanchesMac.Controllers
         void ListAdress()
         {
             var userId = _userManager.GetUserId(User);
-            var categories = _adressService.ListByUserId(userId);
-            categories.Insert(0, new Adress { Id = 0, Name = "Selecione" });
-            ViewBag.Adresses = new SelectList(categories, "Id", "Name");
+            var adresses = _adressService.ListByUserId(userId);
+            adresses.Insert(0, new Adress { Id = 0, Name = "Selecione" });
+            ViewBag.Adresses = new SelectList(adresses, "Id", "Name");
         }
     }
 }

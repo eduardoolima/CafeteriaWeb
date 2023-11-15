@@ -1,0 +1,234 @@
+﻿@model CafeteriaWeb.ViewModel.AdminOrderViewModel
+
+@{
+    ViewData["Title"] = "Pedido Externo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-card">
+    <h1>Registrar Pedido Externo</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    @foreach (var item in ViewBag.Products)
+                    {
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input id="itemId" name="itemId" type="hidden" value="@item.Id">
+                                <input name="itemPrice" type="hidden" value="@item.Price">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input name="itemAmount" class="form-control" type="number" style="width:70px;" min="0" value="0">
+                                    </div>
+                                    <div class="col-3">
+                                        <img id="profilePicture" src="@Url.Content(item.ImgThumbnailPath)" height="40" width="60" />                                                                            
+                                    </div>
+                                    <div class="col-5">
+                                        <label class="form-check-label" asp-for="Products">@item.Name</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <span id="productsValidation" class="text-danger"></span>
+                </div>
+                
+
+                <div class="form-group">
+                    <label asp-for="Order.Observation" class="control-label"></label>
+                    <input id="observation" asp-for="Order.Observation" class="form-control" />
+                    <span asp-validation-for="Order.Observation" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input id="isPayed" class="form-check-input" asp-for="Order.IsPaid" /> @Html.DisplayNameFor(model => model.Order.IsPaid)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input id="forDelivery" class="form-check-input" asp-for="Order.ForDelivery" /> @Html.DisplayNameFor(model => model.Order.ForDelivery)
+                            </label>
+                        </div>
+                    </div>
+                </div>                               
+
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input id="externalClient" class="form-check-input" asp-for="ExternalClient" /> @Html.DisplayNameFor(model => model.ExternalClient)
+                    </label>
+                </div>
+
+                <div id="client" class="form-group">
+                    <label asp-for="Order.UserId" class="control-label">Cliente</label>
+                    <select id="selectClient" asp-for="Order.UserId" class="form-control" asp-items="ViewBag.Users"></select>
+                    <span id="clientValidation" class="text-danger"></span>
+                </div>
+                <div id="adress" class="form-group">
+                    <label asp-for="Order.AdressId" class="control-label">Endereço</label>
+                    <select id="selectAdress" asp-for="Order.AdressId" class="form-control"></select>
+                    <span id="adressValidation" class="text-danger"></span>
+                </div>
+                @* <div id="adressString" class="form-group" style="display:none;">
+                    <label asp-for="Adress" class="control-label"></label>
+                    <input asp-for="Adress" class="form-control" >
+                </div> *@                
+            </form>
+            <br />
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <button class="btn btn-primary" onclick="submitForm()">Gravar</button>
+                    </div>
+                </div>
+                <div class="col-6 text" style="text-align: end">
+                    <div class="form-group">
+                        <a class="btn btn-secondary ml-2" asp-action="Index">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/adminCreateOrder.js"></script>
+    @* <script>
+
+        function submitForm() {
+            debugger
+            var products = [];
+
+            $('input[name="itemId"]').each(function (index) {
+                var itemId = $(this).val();
+
+                var itemAmount = $('input[name="itemAmount"]').eq(index).val();
+                var itemPrice = $('input[name="itemPrice"]').eq(index).val();
+
+                var product = {
+                    productId: itemId,
+                    amount: itemAmount,
+                    price: itemPrice
+                };
+                products.push(product);
+            });
+            console.log(products)
+            var observation = $('#observation').val();
+            var isPaid = $('#isPayed').prop('checked');
+            var forDelivery = $('#forDelivery').prop('checked');
+            var externalClient = $('#externalClient').prop('checked');
+            var userId = $('#selectClient').val();
+            var addressId = $('#selectAdress').val();
+            //var addressString = $('#adressString').val();
+
+            // Criação do objeto com os dados coletados
+            var data = {
+                Products: products,
+                Order: {
+                    Observation: observation,
+                    IsPaid: isPaid,
+                    ForDelivery: forDelivery,
+                    UserId: userId,
+                    AdressId: addressId
+                },
+                ExternalClient: externalClient,
+                //Adress: addressString
+            };
+            var jsonData = JSON.stringify(data)
+            console.log(jsonData)
+            debugger
+            // Envio dos dados para a action via AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/AdminOrder/CreateOrder/',
+                //contentType: 'application/json',
+                data: { jsonData: jsonData },
+                success: function (response) {
+                    console.log("deu bão")
+                    // Lógica em caso de sucesso
+                },
+                error: function (xhr, status, error) {
+                    // Lógica em caso de erro
+                    console.log(error);
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            function updateVisibilit() {
+                var externalClientChecked = $('#externalClient').is(':checked');
+                var forDeliveryChecked = $('#forDelivery').is(':checked');
+
+                if (externalClientChecked && forDeliveryChecked) {
+                    $('#client').hide();
+                    $('#adress').hide();
+                    //$('#adressString').show();
+                } else if (forDeliveryChecked) {
+                    $('#client').show();
+                    $('#adress').show();
+                    //$('#adressString').hide();
+                } else {
+                    $('#adress').hide();
+                    //$('#adressString').hide();
+                    if (!externalClientChecked) {
+                        $('#client').show();
+                    } else {
+                        $('#client').hide();
+                    }
+                }
+            }
+
+            $('#externalClient').change(function () {
+                updateVisibilit();
+            });
+
+            $('#forDelivery').change(function () {
+                updateVisibilit();
+            });
+
+            updateVisibilit();
+
+            $('#selectClient').change(function () {
+                let selectClient = $('#selectClient')
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/AdminOrder/ListAdress/",
+                    data: { userId: selectClient.val() },
+                    success: function (data) {
+                        AddAdresses(data)
+                    },
+                    error: function (error) {
+                        if (error.status == 401) {
+                            return;
+                        }
+                    }
+                });
+
+            });
+
+            function AddAdresses(adresses){
+                $.each(adresses, function (index, item) {
+                    $('#selectAdress').append($('<option>', {
+                        value: item.id,
+                        text: item.street +' '+ item.number
+                    }));
+                    console.log(item)
+                })
+            }            
+
+        });
+
+
+    </script> *@
+
+}

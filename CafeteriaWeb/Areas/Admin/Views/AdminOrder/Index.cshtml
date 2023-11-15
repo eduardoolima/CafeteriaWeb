@@ -6,7 +6,22 @@
 }
 <div class="page-card">
     <h1>Pedidos</h1>
+    <a class="btn btn-primary" asp-action="Create">Registrar Pedido Externo</a>
+    <form method="post" asp-action="PeriodFilter" id="filterPeriodForm">
+        <div class="form-group">
+            <label for="period" class="form-label mt-4"><strong>Filtrar por periodo</strong></label>
+            <select class="form-select" id="period" name="period" onchange="postForm()" style="width:160px; margin-bottom:10px;">
+                <option value="0" selected="@(ViewBag.Period == "0")">Tudo</option>
+                <option value="day" selected="@(ViewBag.Period == "day")">Hoje</option>
+                <option value="week" selected="@(ViewBag.Period == "week")">Esta semana</option>
+                <option value="month" selected="@(ViewBag.Period == "month")">Este Mês</option>
+                <option value="year" selected="@(ViewBag.Period == "year")">Este Ano</option>
+            </select>
 
+
+        </div>
+    </form>
+    
     <table class="table table-hover">
         <thead>
             <tr class="table-active">
@@ -39,8 +54,12 @@
             </tr>
         </thead>
         <tbody>
+            @{
+                decimal totalvalue = 0;
+            }
             @foreach (var item in Model)
             {
+                totalvalue += item.TotalOrder;
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Id)
@@ -81,13 +100,30 @@
                         }
                     </td>
                     <td>
-                        <a class="btn btn-success finish-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Finalizar Pedido"><i class="fa-solid fa-clipboard-check"></i></a>
-                        <a class="btn btn-primary outDelivery-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Saiu para entrega"><i class="fa-solid fa-motorcycle"></i></a>
+                        @if (!item.Finished)
+                        {
+                            <a class="btn btn-success finish-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Finalizar Pedido"><i class="fa-solid fa-clipboard-check"></i></a>
+                        }
+                        @if (item.OrderDelivered != null)
+                        {
+                            <a class="btn btn-primary outDelivery-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Saiu para entrega"><i class="fa-solid fa-motorcycle"></i></a>
+                        }
+                        @if (!item.IsPaid)
+                        {
+                            <a class="btn btn-outline-success pay-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Pago"><i class="fa-solid fa-sack-dollar"></i></a>
+                        }
                         <a class="btn btn-danger delete-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="9">
+                    <strong>Total de vendas: R$@totalvalue</strong>
+                </td>                
+            </tr>            
+        </tfoot>
     </table>
 
     <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -98,6 +134,15 @@
 @section Scripts {
 
     <script>
+
+        function postForm() {
+            debugger
+            let form = document.getElementById('filterPeriodForm')
+            if (form) {
+                form.submit();
+            }
+        }
+
         $(document).ready(function () {
 
             $('.delete-button').click(function () {
@@ -105,6 +150,15 @@
                 var id = $(this).data('id');
 
                 $("#modal").load("/Admin/AdminOrder/Delete/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.pay-button').click(function () {
+                debugger
+                var id = $(this).data('id');
+
+                $("#modal").load("/Admin/AdminOrder/MarkOrderAsPayed/" + id, function () {
                     $("#modal").modal("show");
                 })
             });

@@ -49,7 +49,18 @@ namespace CafeteriaWeb.Services
             {
                 return null;
             }
+        }
 
+        public List<User> FindAll()
+        {
+            try
+            {
+                return _context.Users.ToList();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         #endregion

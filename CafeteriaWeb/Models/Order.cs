@@ -45,11 +45,10 @@ namespace CafeteriaWeb.Models
         public string UserId { get; set; }
         [Display(Name = "Cliente")]
         public virtual User User { get; set; }
-        public int AdressId { get; set; }
+        public int? AdressId { get; set; }
         [Display(Name = "Endereço")]
-        public virtual Adress Adress { get; set; }
+        public virtual Adress? Adress { get; set; }
         public bool Enabled { get; set; }
-
         [NotMapped]
         public string? StatusMessage { get; set; }
     }
