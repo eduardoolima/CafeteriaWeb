@@ -96,17 +96,34 @@ namespace CafeteriaWeb.Services
                 throw new DbUpdateConcurrencyException(e.Message);
             }
         }
+
         #endregion
 
         #region delete
         public void Remove(int id)
         {
             var obj = _context.Products.Find(id);
-            _context.Products.Remove(obj);
+            obj.Enabled = false;
+            _context.Update(obj);
             _context.SaveChanges();
         }
 
         public async Task RemoveAsync(int id)
+        {
+            var obj = await _context.Products.FindAsync(id);
+            obj.Enabled = false;
+            _context.Update(obj);
+            await _context.SaveChangesAsync();
+        }
+
+        public void Delete(int id)
+        {
+            var obj = _context.Products.Find(id);
+            _context.Products.Remove(obj);
+            _context.SaveChanges();
+        }
+
+        public async Task DeleteAsync(int id)
         {
             var obj = await _context.Products.FindAsync(id);
             _context.Products.Remove(obj);

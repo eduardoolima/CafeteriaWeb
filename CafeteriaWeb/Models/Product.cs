@@ -48,9 +48,14 @@ namespace CafeteriaWeb.Models
         public int CategoryId { get; set; }
         [Display(Name = "Categoria")]
         public virtual Category? Category { get; set; }
-
         public bool Enabled { get; set; }
+        public bool IsOnPromotion { get; set; }
+        public int? PromotionId { get; set; }
+        public virtual Promotion? Promotion { get; set; }
 
+        [Display(Name = "Preço Especial")]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal NormalPrice { get; set; }
         [NotMapped]
         public string? StatusMessage { get; set; }
         //[NotMapped]

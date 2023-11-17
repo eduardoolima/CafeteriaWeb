@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CafeteriaWeb.Models.Promotion>
+
+@{
+    ViewData["Title"] = "Promoções";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-card">
+    <h1>Promoções</h1>
+
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Criar Promoção</a>
+    </p>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-active">
+                <th>
+                    @Html.DisplayNameFor(model => model.OnSalePrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SaleStart)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SaleEnd)
+                </th>    
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifyedOn)
+                </th>                
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OnSalePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SaleStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SaleEnd)
+                </td>  
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td> 
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifyedOn)
+                </td>                
+                <td>
+                    <a asp-action="Edit" class="btn btn-primary" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>                    
+                    <a class="btn btn-danger delete-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $('.delete-button').click(function () {
+                debugger
+                var id = $(this).data('id');
+
+                $("#modal").load("/Admin/Promotions/Delete/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+        });
+    </script>
+}

@@ -55,6 +55,7 @@ namespace CafeteriaWeb.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public IActionResult RemoveAllProductFromShoppingCart(int id)
         {
             var selectedProduct = _productsService.FindById(id);

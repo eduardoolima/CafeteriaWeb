@@ -16,15 +16,21 @@
         {
             <div class="card" style="width: 350px; margin-bottom: 10px; margin-right: 5px;margin-left: 5px;">
                 <img src="@Url.Content(item.ImgPath)" class="img-fluid" style="height:190px;" />
-                <p>Preço: @item.Price.ToString("c")</p>
+                @if (item.IsOnPromotion)
+                {
+                    <p><strong><i class="text-success fa-solid fa-tags"></i>Preço Especial!</strong> @item.Price.ToString("c")</p>
+                }
+                else
+                {
+                    <p>Preço: @item.Price.ToString("c")</p>
+                }                
                 <div class="card-body">
-                    <h5 class="card-title"><a asp-controller="Snack" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></h5>
+                    <h5 class="card-title"><strong>@item.Name</strong></h5>
                     <p>@item.SmallDescription</p>
                     <div>
                         <p class="button">
-
                             <a class="addToCart btn btn-primary" id="addToCartButton" data-product-id="@item.Id">
-                                Incluir no Carrinho
+                                <i class="fa-solid fa-cart-plus"></i> Incluir no Carrinho
                             </a>
                         </p>
                     </div>

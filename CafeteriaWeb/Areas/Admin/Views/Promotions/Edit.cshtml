@@ -1,0 +1,95 @@
+﻿@using Newtonsoft.Json;
+@model CafeteriaWeb.ViewModel.PromotionViewModel
+
+@{
+    ViewData["Title"] = "Editar Promoção";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-card">
+    <h1>Editar Promoção</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input id="promotionId" type="hidden" asp-for="PromotionId" />
+                <div class="row">
+                    @foreach (var item in ViewBag.Products)
+                    {
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input id="itemId" name="itemId" type="hidden" value="@item.Id">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <input name="itemAmount" class="form-check-input" type="checkbox" value="@item.Id">
+                                    </div>
+                                    <div class="col-3">
+                                        <img id="profilePicture" src="@Url.Content(item.ImgThumbnailPath)" height="40" width="60" />
+                                    </div>
+                                    <div class="col-8">
+                                        <label class="form-check-label">@item.Name</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <span id="productsValidation" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Preço Promocional</label>
+                    <div class="input-group">
+                        <span class="input-group-text">R$</span>
+                        <input id="price" asp-for="OnSalePrice" class="form-control money-mask" />
+                    </div>
+                    <span id="priceValidation" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="control-label">Início da Promoção</label>
+                            <input id="startDate" asp-for="SaleStart" class="form-control" />
+                            <span id="startDateValidation" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="control-label">Fim da Promoção</label>
+                            <input id="endDate" asp-for="SaleEnd" class="form-control" />
+                            <span id="endDateValidation" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <button class="btn btn-primary" onclick="submitFormEdit()">Gravar</button>
+                    </div>
+                </div>
+                <div class="col-6 text" style="text-align: end">
+                    <div class="form-group">
+                        <a class="btn btn-secondary ml-2" asp-action="Index">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/promotion.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.money-mask').mask('000000.00', { reverse: true });
+            var products = @Html.Raw(JsonConvert.SerializeObject(Model.Products));
+            console.log(products);
+            loadProductsData(products)
+        });
+    </script>
+}

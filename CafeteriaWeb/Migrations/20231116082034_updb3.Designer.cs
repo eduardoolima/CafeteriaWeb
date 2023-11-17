@@ -4,6 +4,7 @@ using CafeteriaWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CafeteriaWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231116082034_updb3")]
+    partial class updb3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,7 +278,7 @@ namespace CafeteriaWeb.Migrations
                     b.Property<bool>("IsFavorite")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsOnPromotion")
+                    b.Property<bool>("IsOnSale")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("ModifyedOn")
@@ -286,13 +289,10 @@ namespace CafeteriaWeb.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
-                    b.Property<decimal>("NormalPrice")
-                        .HasColumnType("decimal(10,2)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int?>("PromotionId")
+                    b.Property<int?>("SaleId")
                         .HasColumnType("int");
 
                     b.Property<string>("SmallDescription")
@@ -304,12 +304,12 @@ namespace CafeteriaWeb.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("PromotionId");
+                    b.HasIndex("SaleId");
 
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("CafeteriaWeb.Models.Promotion", b =>
+            modelBuilder.Entity("CafeteriaWeb.Models.Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -337,7 +337,7 @@ namespace CafeteriaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Promotions");
+                    b.ToTable("Sale");
                 });
 
             modelBuilder.Entity("CafeteriaWeb.Models.ShoppingCartItem", b =>
@@ -653,13 +653,13 @@ namespace CafeteriaWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CafeteriaWeb.Models.Promotion", "Promotion")
+                    b.HasOne("CafeteriaWeb.Models.Sale", "Sale")
                         .WithMany("Products")
-                        .HasForeignKey("PromotionId");
+                        .HasForeignKey("SaleId");
 
                     b.Navigation("Category");
 
-                    b.Navigation("Promotion");
+                    b.Navigation("Sale");
                 });
 
             modelBuilder.Entity("CafeteriaWeb.Models.ShoppingCartItem", b =>
@@ -734,7 +734,7 @@ namespace CafeteriaWeb.Migrations
                     b.Navigation("OrderItens");
                 });
 
-            modelBuilder.Entity("CafeteriaWeb.Models.Promotion", b =>
+            modelBuilder.Entity("CafeteriaWeb.Models.Sale", b =>
                 {
                     b.Navigation("Products");
                 });

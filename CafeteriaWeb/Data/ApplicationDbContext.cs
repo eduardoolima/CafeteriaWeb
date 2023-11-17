@@ -15,7 +15,8 @@ namespace CafeteriaWeb.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Adress> Adress { get; set; } = default!;
-        public DbSet<CafeteriaWeb.Models.Notification> Notification { get; set; } = default!;
+        public DbSet<Notification> Notification { get; set; } = default!;
+        public DbSet<Promotion> Promotions { get; set; } = default!;
 
     }
 }

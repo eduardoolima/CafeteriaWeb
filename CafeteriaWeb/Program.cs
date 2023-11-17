@@ -18,17 +18,6 @@ builder.Services.AddDefaultIdentity<User> (options => options.SignIn.RequireConf
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-//builder.Services.AddIdentity<User, IdentityRole>()
-//            .AddEntityFrameworkStores<ApplicationDbContext>()
-//            .AddDefaultTokenProviders();
-
-//builder.Services.AddAuthentication()
-//           .AddGoogle(googleOptions =>
-//           {
-//               googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-//               googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-//           });
-
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 builder.Services.Configure<PaymentConfiguration>(builder.Configuration);
@@ -43,6 +32,7 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<PromotionService>();
 builder.Services.AddScoped<SeedUserRoleInitial>();
 
 builder.Services.AddAuthorization(options =>
