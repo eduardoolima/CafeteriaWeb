@@ -18,22 +18,30 @@
                 <img src="@Url.Content(item.ImgPath)" class="img-fluid" style="height:190px;" />
                 @if (item.IsOnPromotion)
                 {
-                    <p><strong><i class="text-success fa-solid fa-tags"></i>Preço Especial!</strong> @item.Price.ToString("c")</p>
+                    @* <p><strong><i class="text-success fa-solid fa-tags"></i>Preço Especial!</strong> @item.Price.ToString("c")</p> *@
+                    <h5>
+                        @* <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAACUUlEQVR4nH1TX0iTURT/eqqH3kq69/sGe/FFIegxeulJlJ5q372bbX6JElFIFCZFUY2a7d7ljOZkWyb2ByoxNXSQFWb/YGqa9VBEmeshMRcEg5z9eejE+b42p5teOHyHc36/3z3nfOcqSpGzRfB6KvSkKvR6NPQxpqx1aHDvZiodlaqf1RHJMmqbG+hF5w809IlgGcxZmN2bCgSIZO1U8kUadKXVkPuvFtsH+YYxzNGAcxGxhRUIfVwNe5aRihliaICPL93sc9iJYMMkwDNq1ICq3rPw8PMU9H9MwNbrDSZp+61GODJyxRKIGoBYk+Nz2BUqnSdpi+u3FjNMwOvUDOzsPgHnE3cgONFvxu5NJ2DbjcN5lRiAHCr4KYVIVxmVbCGbTKbnofzaITg60gGhVwPQMByFY087C1pBDrnAyxUqeQVOPVtB45OrMDk/Dc9n30Jl7xkY+DQGtljtCgEDkINchQj2RVtleDffPYbqeABG597Dm29JOP6saykf9gARfBYrOEclX9AiVgVZQ6J/rAfapgbNNsq6DsJM+quVj1iDpFL3Wb9QskE15M6RSzv3w/3kBNg76qDlZR80j3bDjttNZmv/dwKoYPG8HeBD+QIHHoVhV5/X9HGgPR9ewFByEiruns4JEMEe5ARUqTdRqaetVmpWX6RIDSAGschZvoqgrKN+xyXa6vqpRgxz43Lb1+4BFcmt1b+I5JcRW/RB2Zq5RvzsDxH6dypYCsVMEyyFMcxpco9tzVdp99ZuwG+Jl28kgsWp4HH0MVYaqlq/kvAPURatbmqSmm0AAAAASUVORK5CYII="> *@
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE5ElEQVR4nK1XfUyVVRi///RH/dEfleM977Vsq2Vtro/laqtmf1RrLtuSc16JL0FUytpSLGulQqX3PRcC4eIFBIOY6ICE3NQmGlESqVELBJ1EQORXoUMxvrmX+7TnvB+8l/fChTvP9uze+5znPL/zfJ/rcMxxyTuVJ4lK24jKvNKO6EUGH78jD/ecfOUTjtu57smIv1vi9E/CGQhS6QRR6Vc6TRh8SWWdKHvbgInKqoXy7BiQc2OBuJWAeQm3EhC87BgNnNOqiEAkl7KAcFZLOP1N4uws4awXFcqZCjgLE8G5ZzU4i1aDnBcnCL8LXmEikCxFuwxnvRKnLYSzZqKyGtQZ3joXXW9aY1rFQPbGawCzEMqgrO08V1Ln4tZdKOzMt1gTCeHZ/Dg99jQvvKtVVieACxIiBzWoIMFIurow8aXREmc3BfA0ax8sSYGHvlw3b6v1KhhA3TZAp4s+TjhrMGOS86Z5+Jn9afDjxTbwTfphMhCA5n864fnKLTaQ7U0VcKH/Ejw87XKoy1KG3yOWbqWyQFLpqJa5q8DpnXLx/cVJ8HtfF9wYHYSNDcWw+Ye98N/4CLT0dcPCPUmm3LMHNsOwbwzW1OWGttybIHTr8R4VWU4yVtxFVDqkuVcvF51ePrgVcLnOVJk8b8sRwVtascnkNVw8C0e7m8O4PdGweggxNas5rRIW5weXTPKxXAGy9rjH5H14skzwXq3ZLn6/W18Et8aH4al9781eavnx9gaDgTc6k1V4eW26bnG1ydvbVgcBCMCjZW/BkvJ34PrILdhysixsopEco7NFUxM4yq28JoCxO1mEHyhOhvbrvTAwNgQfN5bD56cqYdQ3DlUdjWK/uqMRTl+9EBTvGYEzta4WpdIVWsPAGHPWrTUNe3fCxKn/uxWGJkahb/gmlLafEJkbc8QNY/4JWFb10dxKa7fmasJpj4gxUWmWiG9OsJtnI6znvwb+hczmGnikNBXKz9XDtZEBGPGNQ+Plc/BCiHJzYpx1dyMmtsg+AeyJmzNwQctR6Oi/BItK1kDNH00wMemDnF+/gW1NFSIsnTeuiD0bsEdroYjpiOJKMlGpn3AWQHeEA33l4DYY9/vg9UOfwWNlb4tEqzjfYO7vOF0pEnJ5bcZMrp6UOU3RBwONJZz5RJxnAcdka73WA2XtJ8RvLClcW3/aZytB/LSBqtRPVBYf3Kc5e1+4PHeqXU6nT08dgCuD/bC4NFX8frpiowApbP3WlEn/eb/gvfT1J1MuztXapqTSD+wDwq1sEMB5sSFBMbsxs5OO7Qrin7naIdropoYSWHc8X2Q+9nNrieGDQQC7lQ12YK6km3M4BDC2xcNdv9j4OESaLp8Hf2BSDJLveluEJ4LkPEbXUtJDzGGaJ+KQpQir5YLwiTa9xHB0BmVxQbzQZTyJJM48ISyOXkZU2mV9sshZq+YFHgT6hTaNLNQtuZQXZ3wMyJnKYonTNOORZx2TcyZvgvXRl4Y6ZwS0XYDTlKBHQVEiyLsTQl8E5y3u6WPVHP4uZa1jvmthjnKnpNJ+Y3gEhcCS+SKGVpdqsgE8izockSzC6c4ppbQH38iE00FjhBqPeDHctb0ey78KlyPiVZx6h+ymz5Hs2PsMVpRr5RJjmhkXMt9RGCL1jXvxDJ6NHHiGhcrx34bE2SHrpeaz/ge6KrakKAVavwAAAABJRU5ErkJggg==">
+                        <strong>Preço Especial!</strong> @item.Price.ToString("c")
+                    </h5>
                 }
                 else
                 {
-                    <p>Preço: @item.Price.ToString("c")</p>
+                    <h6>Preço: @item.Price.ToString("c")</h6>
                 }                
                 <div class="card-body">
                     <h5 class="card-title"><strong>@item.Name</strong></h5>
                     <p>@item.SmallDescription</p>
-                    <div>
-                        <p class="button">
-                            <a class="addToCart btn btn-primary" id="addToCartButton" data-product-id="@item.Id">
-                                <i class="fa-solid fa-cart-plus"></i> Incluir no Carrinho
-                            </a>
-                        </p>
-                    </div>
+                    @if (User.IsInRole("Client"))
+                    {
+                        <div>
+                            <p class="button">
+                                <a class="addToCart btn btn-primary" id="addToCartButton" data-product-id="@item.Id">
+                                    <i class="fa-solid fa-cart-plus"></i> Incluir no Carrinho
+                                </a>
+                            </p>
+                        </div>
+                    }                    
                 </div>
             </div>
         }

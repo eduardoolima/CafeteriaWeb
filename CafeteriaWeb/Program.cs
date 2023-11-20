@@ -33,6 +33,9 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<PromotionService>();
+builder.Services.AddScoped<CategorySupplierService>();
+builder.Services.AddScoped<SupplierService>();
+builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<SeedUserRoleInitial>();
 
 builder.Services.AddAuthorization(options =>

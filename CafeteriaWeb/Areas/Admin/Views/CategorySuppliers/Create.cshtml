@@ -1,4 +1,4 @@
-﻿@model CafeteriaWeb.Models.Category
+﻿@model CafeteriaWeb.Models.CategorySupplier
 
 @{
     ViewData["Title"] = "Categorias";
@@ -7,7 +7,7 @@
 <div class="modal-dialog adjustment-modal">
     <div class="modal-content" style="z-index:100;">
         <div class="modal-header">
-            <h1 class="modal-title">Editar Categoria</h1>
+            <h1 class="modal-title">Cadastrar Categoria</h1>
             <button type="button" class="close btn btn-danger" data-bs-dismiss="modal">
                 <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span><span class="sr-only">Close</span>
             </button>
@@ -15,10 +15,8 @@
         <div class="row content-page">
             <div class="col-md-12">
                 <partial name="_StatusMessage" for="StatusMessage" />
-                <form asp-action="Edit">
+                <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="Enabled" />
                     <div class="form-group">
                         <label asp-for="Name" class="control-label"></label>
                         <input asp-for="Name" class="form-control" />
@@ -29,7 +27,6 @@
                         <input asp-for="Description" class="form-control" />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-                    
                     <br />
                     <div class="row">
                         <div class="col-6">
@@ -51,6 +48,9 @@
     </div>
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -17,6 +17,10 @@ namespace CafeteriaWeb.Data
         public DbSet<Adress> Adress { get; set; } = default!;
         public DbSet<Notification> Notification { get; set; } = default!;
         public DbSet<Promotion> Promotions { get; set; } = default!;
+        public DbSet<CategorySupplier> CategorySupplier { get; set; } = default!;
+        public DbSet<Supplier> Suppliers { get; set; } = default!;
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
 
     }
 }

@@ -35,6 +35,8 @@
             <form asp-action="Edit" enctype="multipart/form-data" onsubmit="return validateForm()">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
+                    <input type="hidden" asp-for="Enabled" />
+                    <input type="hidden" asp-for="CreatedOn" />
     @*                <input asp-for="ImgPathOld" type="hidden" />
                     <input asp-for="ImgThumbnailPathOld" type="hidden" />*@
                     <div class="form-group col-3 mb-3">

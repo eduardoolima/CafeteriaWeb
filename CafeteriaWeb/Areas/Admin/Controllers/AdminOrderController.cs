@@ -251,7 +251,7 @@ namespace CafeteriaWeb.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var order = _orderService.FindById(id.Value);
+            var order = await _orderService.FindByIdAsync(id.Value);
             if (order == null)
             {
                 return NotFound();

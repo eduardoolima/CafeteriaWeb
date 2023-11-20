@@ -1,0 +1,105 @@
+﻿@model IEnumerable<CafeteriaWeb.Models.Employee>
+
+@{
+    ViewData["Title"] = "Funcionários";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-card">
+    <h1>Funcionarios</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Cadastrar Funcionário</a>
+    </p>
+
+    <form id="showAllEmploeeys" method="post" asp-action="FilterEmployees">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="showAllEmploeeysCheck" onchange="postForm()" checked="@ViewBag.EmploeeysFilter">
+            <label class="form-check-label" for="showAllEmploeeys">Mostrar Ex Funcionarios</label>
+        </div>
+    </form>
+    
+
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-active">
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Wage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Enabled)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedOn)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Wage)
+                    </td>
+                    <td>
+                        @if (item.Enabled)
+                        {
+                            <span>Sim <i class="text-success fa-solid fa-circle-check"></i></span>
+                        }
+                        else
+                        {
+                            <span>Não <i class="text-danger fa-solid fa-circle-xmark"></i></span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedOn)
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="delete-button btn btn-danger" href="#" id="delete-button" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.delete-button').click(function () {
+                var id = $(this).data('id');
+                var id = $(this).attr("data-id");
+                $("#modal").load("/Admin/Employees/Delete/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+            
+        });
+        function postForm() {
+            debugger
+            let checkbox = document.getElementById('showAllEmploeeysCheck');
+            let form = document.getElementById('showAllEmploeeys')
+            form.setAttribute('action', checkbox.checked ? '/Admin/Employees/FilterEmployees?allEmploeeys=true' : '/Admin/Employees/FilterEmployees?allEmploeeys=false');
+            if (form) {
+                form.submit();
+            }
+        }
+    </script>
+}
+

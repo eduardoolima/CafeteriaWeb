@@ -35,6 +35,8 @@ namespace CafeteriaWeb.Services
             return _context.Promotions.Include(p => p.Products).FirstOrDefault(obj => obj.Id == id && obj.Enabled);
         }
 
+        //public bool ProductHasPromotion(int id) { }
+
         public List<Promotion> ListByProductId(int id)
         {
             List<Promotion> promotions = _context.Promotions.Include(s => s.Products).Where(s => s.Products.Any(p => p.Id == id)).ToList();            
@@ -119,9 +121,23 @@ namespace CafeteriaWeb.Services
         public async Task RemoveAsync(int id)
         {
             var obj = await _context.Promotions.FindAsync(id);
-            obj.Enabled = false;
-            _context.Update(obj);
-            await _context.SaveChangesAsync();
+
+            if (obj != null)
+            {
+                obj.Enabled = false;
+                var productsToUpdate = await _context.Products
+                .Where(p => p.PromotionId == id && p.Enabled)
+                .ToListAsync();
+
+                foreach (var product in productsToUpdate)
+                {
+                    product.PromotionId = null;
+                    _context.Update(product);
+                }
+                _context.Update(obj);
+                await _context.SaveChangesAsync();
+            }             
+           
         }
 
         public void Delete(int id)

@@ -72,6 +72,11 @@ namespace CafeteriaWeb.Areas.Admin.Controllers
             List<Product> products = new();
             foreach(var item in promotionViewModel.Products)
             {
+                //Promotion currentPromotion = _promotionService.FindById
+                //if (item)
+                //{
+
+                //}
                 Product product = _productService.FindById(item);
                 products.Add(product);
             }

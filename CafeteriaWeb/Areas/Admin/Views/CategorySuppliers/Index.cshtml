@@ -1,0 +1,99 @@
+﻿@model IEnumerable<CafeteriaWeb.Models.CategorySupplier>
+
+@{
+    ViewData["Title"] = "Categorias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-card">
+    <h1>Categorias</h1>
+
+    <p>
+        <a href="#" id="create-button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Criar nova">Nova Categoria</a>
+    </p>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-active">
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifyedOn)
+                </th>
+                <th>                   
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifyedOn)
+                    </td>
+                    <td>
+                        <a href="#" id="edit" data-id="@item.Id" class="edit-button btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="#" id="delete-button" data-id="@item.Id" class="delete-button btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
+    </div>
+</div>
+@section Scripts {
+    <script>
+
+        var hasMessage = @((bool)ViewBag.HasMessage ? "true" : "false");
+        if (hasMessage) {
+            $("#modal").load("/Admin/CategorySuppliers/Create", function () {
+                $("#modal").modal("show");
+            })
+        }
+
+        $(document).ready(function () {
+
+            $('#create-button').click(function () {
+                $("#modal").load("/Admin/CategorySuppliers/Create", function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.edit-button').click(function () {
+                var id = $(this).data('id');
+
+                var id = $(this).attr("data-id");
+                $("#modal").load("/Admin/CategorySuppliers/Edit/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.delete-button').click(function () {
+
+                var id = $(this).data('id');
+
+                var id = $(this).attr("data-id");
+                $("#modal").load("/Admin/CategorySuppliers/Delete/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+        });
+
+    </script>
+}

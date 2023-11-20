@@ -1,0 +1,64 @@
+﻿@model CafeteriaWeb.Models.Employee
+
+@{
+    ViewData["Title"] = "Editar Funcinário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-card">
+    <h1>Editar Funcionário</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Enabled" />
+                <input type="hidden" asp-for="CreatedOn" />
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+
+                        <label asp-for="Wage" class="control-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">R$</span>
+                            <input asp-for="Wage" class="form-control money-mask" />
+                        </div>
+                        <span asp-validation-for="Wage" class="text-danger"></span>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <input type="submit" value="Gravar" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <div class="col-6 text" style="text-align: end">
+                        <div class="form-group">
+                            <a class="btn btn-secondary ml-2" asp-action="Index">Voltar</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('.money-mask').mask('000000.00', { reverse: true });
+        });
+    </script>    
+}

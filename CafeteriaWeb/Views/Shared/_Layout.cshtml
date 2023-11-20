@@ -46,17 +46,31 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Categories" asp-action="Index">Categorias</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Products" asp-action="Index">Produtos</a>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link text-light dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Produtos</a>
+                                    <div class="dropdown-menu">
+                                        <a class="nav-link text-primary" asp-area="" asp-controller="Products" asp-action="Index"><i class="fa-solid fa-mug-hot"></i> Produtos</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="nav-link text-primary" asp-area="" asp-controller="Categories" asp-action="Index"><i class="fa-solid fa-tag"></i> Categorias</a>
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="Admin" asp-controller="AdminOrder" asp-action="Index">Pedidos</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Promoções</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link text-light dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Fornecedores</a>
+                                    <div class="dropdown-menu">
+                                        <a class="nav-link text-primary" asp-area="Admin" asp-controller="Suppliers" asp-action="Index"><i class="fa-solid fa-clipboard-list"></i> Lista de Fornecedores</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="nav-link text-primary" asp-area="Admin" asp-controller="CategorySuppliers" asp-action="Index"><i class="fa-solid fa-tag"></i> Categorias de Fornecedores</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="Admin" asp-controller="Employees" asp-action="Index">Funcionários</a>
                                 </li>
                             </ul>
                         }
@@ -81,8 +95,9 @@
                             @await Component.InvokeAsync("NotificationComponent")
                         </div>
                     }                                                           
-                    <partial name="_LoginPartial" />
+                    
                 </div>
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>

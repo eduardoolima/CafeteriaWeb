@@ -1,0 +1,106 @@
+﻿@model CafeteriaWeb.Models.Supplier
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-card">
+    <h1>Cadastrar fornecedor</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create" onsubmit="return validateForm()">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="Adress" class="control-label"></label>
+                            <input asp-for="Adress" class="form-control" />
+                            <span asp-validation-for="Adress" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                  
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber" class="control-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" data-mask="(00)90000-0000" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" type="email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+
+                        <div class="form-group">
+                            <label asp-for="CategorySupplierId" class="control-label">Categoria</label>
+                            <select id="ddlCategory" asp-for="CategorySupplierId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                            <span id="validationCategory" class="text-danger"></span>
+                        </div>                        
+                    </div>
+                </div>
+                <br />                                                                               
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <input type="submit" value="Gravar" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <div class="col-6 text" style="text-align: end">
+                        <div class="form-group">
+                            <a class="btn btn-secondary ml-2" asp-action="Index">Voltar</a>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
+
+    <script>
+        function validateForm() {
+            
+            let hasErros = false;            
+            let ddlCategory = document.getElementById("ddlCategory")
+            let validationCategory = document.getElementById("validationCategory")
+            if (ddlCategory.options.selectedIndex == "0") {
+                validationCategory.innerHTML = "Selecione uma categoria valida"
+                hasErros = true
+            }
+            else
+                validationCategory.innerHTML = ""
+            return !hasErros
+
+        }
+
+    </script>
+
+}

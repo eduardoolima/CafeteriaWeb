@@ -153,10 +153,7 @@ namespace CafeteriaWeb.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
             }
-            var category = await _categoryService.FindByIdAsync(id);
-            category.ModifyedOn = DateTime.Now;
-            category.Enabled = false;
-            await _categoryService.UpdateAsync(category);
+            await _categoryService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 

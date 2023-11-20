@@ -72,7 +72,7 @@ namespace CafeteriaWeb.Services
         {
             if (!await _context.Categories.AnyAsync(x => x.Id == obj.Id && obj.Enabled))
             {
-                throw new Exception("Project not found");
+                throw new Exception("Category not found");
             }
             try
             {
@@ -87,14 +87,33 @@ namespace CafeteriaWeb.Services
         #endregion
 
         #region delete
+
         public void Remove(int id)
+        {
+            var obj = _context.Categories.Find(id);
+            obj.ModifyedOn = DateTime.Now;
+            obj.Enabled = false;
+            _context.Categories.Update(obj);
+            _context.SaveChanges();
+        }
+
+        public async Task RemoveAsync(int id)
+        {
+            var obj = await _context.Categories.FindAsync(id);
+            obj.ModifyedOn = DateTime.Now;
+            obj.Enabled = false;
+            _context.Categories.Remove(obj);
+            await _context.SaveChangesAsync();
+        }
+
+        public void Delete(int id)
         {
             var obj = _context.Categories.Find(id);
             _context.Categories.Remove(obj);
             _context.SaveChanges();
         }
 
-        public async Task RemoveAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var obj = await _context.Categories.FindAsync(id);
             _context.Categories.Remove(obj);
