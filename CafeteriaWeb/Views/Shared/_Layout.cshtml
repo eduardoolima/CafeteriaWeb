@@ -44,7 +44,10 @@
                         {
                             <ul class="navbar-nav flex-grow-1">
                                 <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i></a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" data-bs-toggle="tooltip" data-bs-placement="top" title="Cardápio">
+                                        Cardápio
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAvElEQVR4nMXSMW7CQBCFYRepoIlc5Ah0KHfIQcgNOEDaWNzD9KRJelfkDogyZVoi4epDK9bIXllGjpB4zc6bGf0rzUyW3V1YodbVLzZ4wUf0bYX+ogHUyBPoI17xg0XwST3HsTFahQes8Ycy+HZP0nuOdZNv+MQTvoIfC9hjHuNn7MYCDpjEeBr8WECFZYDEt+od3ABghu+4qm30ZWt174OARmlusMcNAHV6SNeUHlLxz1O+zKPvh8FTvqlOq8+XQfPS4o4AAAAASUVORK5CYII=">
+                                    </a>
                                 </li>
 
                                 <li class="nav-item dropdown">
@@ -72,16 +75,25 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="Admin" asp-controller="Employees" asp-action="Index">Funcionários</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Feedbacks" asp-action="Index">Feedback</a>
+                                </li>
                             </ul>
                         }
                         else
                         {
                             <ul class="navbar-nav flex-grow-1">
                                 <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i></a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" data-bs-toggle="tooltip" data-bs-placement="top" title="Cardápio">
+                                        Cardápio
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAvElEQVR4nMXSMW7CQBCFYRepoIlc5Ah0KHfIQcgNOEDaWNzD9KRJelfkDogyZVoi4epDK9bIXllGjpB4zc6bGf0rzUyW3V1YodbVLzZ4wUf0bYX+ogHUyBPoI17xg0XwST3HsTFahQes8Ycy+HZP0nuOdZNv+MQTvoIfC9hjHuNn7MYCDpjEeBr8WECFZYDEt+od3ABghu+4qm30ZWt174OARmlusMcNAHV6SNeUHlLxz1O+zKPvh8FTvqlOq8+XQfPS4o4AAAAASUVORK5CYII=">
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Index">Pedidos <i class="fa-solid fa-receipt"></i></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Feedbacks" asp-action="Index">Feedback</a>
                                 </li>
                             </ul>
                         }

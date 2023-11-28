@@ -56,7 +56,7 @@ namespace LanchesMac.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
-            var orders = _orderService.ListByUser(userId);
+            var orders = _orderService.ListByUserAsync(userId);
             return orders != null ?
                           View(await orders) :
                           Problem("Entity set 'ApplicationDbContext.ordes'  is null.");

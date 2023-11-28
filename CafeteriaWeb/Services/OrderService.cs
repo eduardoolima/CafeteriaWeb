@@ -36,7 +36,7 @@ namespace CafeteriaWeb.Services
             return _context.Orders.Include(obj => obj.User).Include(obj => obj.Adress).Where(obj => obj.Enabled).ToList();
         }
 
-        public async Task<List<Order>> ListByUser(string userId)
+        public async Task<List<Order>> ListByUserAsync(string userId)
         {
             return await _context.Orders.Include(a => a.Adress).Where(obj => obj.Enabled && obj.UserId == userId).ToListAsync();
         }

@@ -1,0 +1,110 @@
+﻿@model IEnumerable<CafeteriaWeb.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Feedback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-card">
+    <h1>Feedback</h1>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong><i class='fa-solid fa-circle-exclamation'></i></strong> @TempData["Message"]                       
+        </div>        
+    }
+
+    @if (!User.IsInRole("Admin"))
+    {
+        <p>
+            <a id="create-button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Deixar Feedback">Deixar FeedBack</a>
+        </p>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Text)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FirstName)&nbsp;@Html.DisplayFor(modelItem => item.User.LastName)
+                    </td>
+                    <td>
+                        @{
+                            int maxLength = 50;
+                            string text = item.Text;
+
+                            if (text.Length > maxLength)
+                            {
+                                text = text.Substring(0, maxLength) + "...";
+                            }
+                        }
+                        @Html.DisplayFor(modelItem => text)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                    </td>
+
+                    <td>                                            
+                        <a href="#" id="details" data-id="@item.Id" class="edit-button btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Completo"><i class="fa-solid fa-circle-info"></i></a>                        
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <a href="#" id="delete-button" data-id="@item.Id" class="delete-button btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir"><i class="fa-regular fa-trash-can"></i></a>
+                        }                        
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
+    </div>
+</div>
+@section Scripts {
+    <script>        
+
+        $(document).ready(function () {
+
+            $('#create-button').click(function () {
+                $("#modal").load("/Feedbacks/Create", function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.edit-button').click(function () {
+                var id = $(this).data('id');
+
+                var id = $(this).attr("data-id");
+                $("#modal").load("/Feedbacks/Details/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+
+            $('.delete-button').click(function () {
+
+                var id = $(this).data('id');
+
+                var id = $(this).attr("data-id");
+                $("#modal").load("/Feedbacks/Delete/" + id, function () {
+                    $("#modal").modal("show");
+                })
+            });
+        });
+
+    </script>
+}

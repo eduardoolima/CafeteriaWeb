@@ -1,0 +1,54 @@
+﻿@model CafeteriaWeb.Models.Feedback
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="modal-dialog adjustment-modal">
+    <div class="modal-content" style="z-index:100;">
+        <div class="modal-header">
+            <h1 class="modal-title">Feedback</h1>
+            <button type="button" class="close btn btn-danger" data-bs-dismiss="modal">
+                <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span><span class="sr-only">Close</span>
+            </button>
+        </div>
+        <div class="row content-page">
+            <div class="col-md-12">
+                <div class="page-card">
+                    <div>
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                @Html.DisplayNameFor(model => model.User)
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.User.FirstName)&nbsp;@Html.DisplayFor(model => model.User.LastName)
+                            </dd>
+                            <dt class="col-sm-5">
+                                @Html.DisplayNameFor(model => model.CreatedOn)
+                            </dt>
+                            <dd class="col-sm-7">
+                                @Html.DisplayFor(model => model.CreatedOn)
+                            </dd>
+                            <div class="form-group">
+                                <label asp-for="Text" class="control-label">Experiência do cliente</label>
+                                <textarea asp-for="Text" class="form-control" rows="10" readonly></textarea>
+                                <span asp-validation-for="Text" class="text-danger"></span>
+                            </div>                            
+                        </dl>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">                                
+                                <button type="button" class="close btn btn-primary ml-2" data-bs-dismiss="modal">
+                                    OK <i class="fa-solid fa-circle-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+﻿@model CafeteriaWeb.Models.Feedback
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="modal-dialog adjustment-modal">
+    <div class="modal-content" style="z-index:100;">
+        <div class="modal-header">
+            <h1 class="modal-title">Cadastrar Categoria</h1>
+            <button type="button" class="close btn btn-danger" data-bs-dismiss="modal">
+                <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span><span class="sr-only">Close</span>
+            </button>
+        </div>
+        <div class="row content-page">
+            <div class="col-md-12">
+                <partial name="_StatusMessage" for="StatusMessage" />
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Text" class="control-label"></label>
+                        <textarea asp-for="Text" class="form-control" rows="10"></textarea>
+                        <span asp-validation-for="Text" class="text-danger"></span>
+                    </div>                    
+                    <br />
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="submit" value="Gravar" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <div class="col-6 text" style="text-align: end">
+                            <div class="form-group">
+                                <button type="button" class="close btn btn-secondary ml-2" data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

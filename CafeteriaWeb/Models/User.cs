@@ -24,5 +24,10 @@ namespace CafeteriaWeb.Models
         public bool Enabled { get; set; }
         [NotMapped]
         public string? CompleteName { get; set; }
+
+        public static implicit operator User(Task<User?> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
