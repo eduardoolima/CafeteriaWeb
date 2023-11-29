@@ -10,6 +10,7 @@ using CafeteriaWeb.Models;
 using CafeteriaWeb.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using CafeteriaWeb.Models.Enums;
 
 namespace CafeteriaWeb.Controllers
 {
@@ -69,11 +70,23 @@ namespace CafeteriaWeb.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                User user = await _userManager.GetUserAsync(User);                              
                 feedback.User = user;
                 feedback.UserId = user.Id;
                 await _feedbackService.InsertAsync(feedback);
                 TempData["Message"] = null;
+
+                User admin = _userManager.FindByNameAsync("gerente@caf");
+                Notification notification = new()
+                {
+                    Title = "Novo Feedback",
+                    Text = $"O cliente {user.FirstName + user.LastName} compartilhou sua experiência na cafeteria conosco. Confira o feedback!",
+                    UserToNotify = admin,
+                    UserToNotifyId = admin.Id,
+                    NotificationType = NotificationType.NewFeedback
+                };
+                _notificationService.CreateNotification(notification);
+
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)

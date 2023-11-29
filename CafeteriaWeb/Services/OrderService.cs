@@ -31,6 +31,30 @@ namespace CafeteriaWeb.Services
             .ToListAsync();
         }
 
+        public async Task<List<Order>> ListAllByFilterAsync(string userId, int orderId, DateTime dateOrder, string adress, string isPayed)
+        {
+            if(isPayed == "all")
+            {
+                return await _context.Orders.Include(obj => obj.User).Include(obj => obj.Adress)
+                   .Where(obj => obj.Enabled && obj.UserId == userId &&
+                   (obj.OrderDispatched.Date == dateOrder.Date ||
+                   obj.Adress.Cep.Contains(adress) ||
+                   obj.Adress.Neighborhood.Contains(adress) ||
+                   obj.Adress.Street.Contains(adress) ||
+                   obj.Adress.Number.Contains(adress) ||
+                   obj.Id == orderId)).ToListAsync();
+            }
+            return await _context.Orders.Include(obj => obj.User).Include(obj => obj.Adress)
+                .Where(obj => obj.Enabled && obj.UserId == userId &&
+                (obj.OrderDispatched.Date == dateOrder.Date ||
+                obj.Adress.Cep.Contains(adress) ||
+                obj.Adress.Neighborhood.Contains(adress) ||
+                obj.Adress.Street.Contains(adress) ||
+                obj.Adress.Number.Contains(adress)) ||
+                obj.Id == orderId ||
+                obj.IsPaid == bool.Parse(isPayed)).ToListAsync();
+        }
+
         public List<Order> ListAll()
         {            
             return _context.Orders.Include(obj => obj.User).Include(obj => obj.Adress).Where(obj => obj.Enabled).ToList();

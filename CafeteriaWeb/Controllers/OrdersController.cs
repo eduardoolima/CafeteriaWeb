@@ -55,12 +55,31 @@ namespace LanchesMac.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
+            ViewBag.isPayed = "all";
             var userId = _userManager.GetUserId(User);
             var orders = _orderService.ListByUserAsync(userId);
             return orders != null ?
                           View(await orders) :
                           Problem("Entity set 'ApplicationDbContext.ordes'  is null.");
         }
+
+        public async Task<IActionResult> OrderFilter(string orderNumber, string isPayed, DateTime dateOrder, string orderAdress)
+        {
+            ViewBag.isPayed = isPayed;
+            string userId = _userManager.GetUserId(User);
+            int orderId = 0;
+            if (int.TryParse(orderNumber, out orderId))
+            { 
+                orderId = int.Parse(orderNumber);
+            }
+            var orders = await _orderService.ListAllByFilterAsync(userId, orderId, dateOrder, orderAdress, isPayed);
+            if(orders.Count <= 0)
+            {
+                orders = await _orderService.ListByUserAsync(userId);
+            }
+            return View("Index", orders);
+        }
+
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -226,6 +245,18 @@ namespace LanchesMac.Controllers
 
                             _notificationService.CreateNotification(notificationNewOrder);
                             notificationId = notificationNewOrder.Id;
+
+                            Notification notificationNewOrderAdmin = new()
+                            {
+                                NotificationType = NotificationType.Order_Approved,
+                                UserToNotify = user,
+                                UserToNotifyId = user.Id,
+                                Title = _notificationConfiguration.NotificationNewOrderTitle,
+                                Text = $"O Cliente {user.FirstName} {user.LastName} Fez o pedido #{order.Id} \n para ser entregue no endereço {order.Adress.Cep} - {order.Adress.Neighborhood}\n {order.Adress.Street} - {order.Adress.Number}"
+                            };
+
+                            _notificationService.CreateNotification(notificationNewOrderAdmin);
+
                             Console.WriteLine("Pagamento " + jsonData.status);
                         }
                     }

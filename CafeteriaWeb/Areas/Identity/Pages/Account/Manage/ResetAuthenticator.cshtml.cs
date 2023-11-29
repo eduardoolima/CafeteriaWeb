@@ -60,7 +60,7 @@ namespace CafeteriaWeb.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.";
+            StatusMessage = "A chave do seu aplicativo autenticador foi redefinida. Você precisará configurar seu aplicativo autenticador usando a nova chave.";
 
             return RedirectToPage("./EnableAuthenticator");
         }

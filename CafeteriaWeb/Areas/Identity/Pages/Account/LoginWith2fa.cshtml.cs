@@ -56,9 +56,8 @@ namespace CafeteriaWeb.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "O código é obrigatório")]
             [StringLength(7, ErrorMessage = "O campo {0} deve ter pelo menos {2} e no máximo {1} caracteres de comprimento.", MinimumLength = 6)]
-
             [DataType(DataType.Text)]
             [Display(Name = "Código autenticador")]
             public string TwoFactorCode { get; set; }

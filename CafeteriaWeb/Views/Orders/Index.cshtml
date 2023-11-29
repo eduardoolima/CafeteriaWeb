@@ -7,7 +7,47 @@
 <div class="page-card">
     <h1>Pedidos</h1>
 
-    <table class="table table-hover">
+    @* <form method="post" asp-action="OrderFilter" id="filterOrdes">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="orderNumber" class="form-label">N° do pedido</label>
+                    <input id="orderNumber" name="orderNumber" class="form-control" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="isPayed" class="form-label">Pedido Pago?</label>
+                    <select id="isPayed" name="isPayed" class="form-control">
+                        <option value="all" selected="@(ViewBag.isPayed == "all")">Todos os Pedidos</option>
+                        <option value="true" selected="@(ViewBag.isPayed == "yes")">Sim</option>
+                        <option value="false" selected="@(ViewBag.isPayed == "no")">Não</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="period" class="form-label">Data do Pedido</label>
+                    <input id="dateOrder" name="dateOrder" type="date" class="form-control" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="period" class="form-label">Endereço</label>
+                    <input id="orderAdress" name="orderAdress" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="form-group">
+                <button id="btnSearch" class="btn btn-primary" onclick="searchOrder()">Pesquisar <i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>            
+        </div>
+    </form> *@
+
+    <table class="table table-hover mt-3">
         <thead>
             <tr class="table-active">
                 <th title="N° do Pedido">
@@ -86,3 +126,11 @@
         </tbody>
     </table>
 </div>
+@section Scripts {
+    <script>
+        function searchOrder() {
+            let form = document.getElementById("filterOrdes")
+            form.submit()
+        }
+    </script>
+}

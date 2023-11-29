@@ -57,6 +57,29 @@ namespace CafeteriaWeb.Services
                     _userManager.AddToRoleAsync(user, "Admin").Wait();
                 }
             }
+            if (_userManager.FindByEmailAsync("gerente@caf").Result == null)
+            {
+                User user = new()
+                {
+                    FirstName = "Suporte",
+                    LastName = "Dev",
+                    UserName = "gerente@caf",
+                    PathPhoto = "~/Img/UserProfilePictures/gerente-100.png",
+                    Email = "gerente@caf",
+                    NormalizedUserName = "GERENTE@CAF",
+                    NormalizedEmail = "GERENTE@CAF",
+                    EmailConfirmed = true,
+                    LockoutEnabled = false,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    CreatedOn = DateTime.Now
+                };
+
+                var result = _userManager.CreateAsync(user, "@1q2w3e4r!Q@W#E$R").Result;
+                if (result.Succeeded)
+                {
+                    _userManager.AddToRoleAsync(user, "Admin").Wait();
+                }
+            }
             if (_userManager.FindByEmailAsync("externalClient@cafeteriaweb").Result == null)
             {
                 User user = new()
@@ -77,7 +100,7 @@ namespace CafeteriaWeb.Services
                 var result = _userManager.CreateAsync(user, "@1q2w3e4r!Q@W#E$R").Result;
                 if (result.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(user, "Admin").Wait();
+                    _userManager.AddToRoleAsync(user, "Client").Wait();
                 }
             }
         }

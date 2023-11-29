@@ -9,5 +9,6 @@
         Discount_Coupon = 4,
         NewOrder = 5,
         OutForDelivery = 6,
+        NewFeedback = 7
     }
 }

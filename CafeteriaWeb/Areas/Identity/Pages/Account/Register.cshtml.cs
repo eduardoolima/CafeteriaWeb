@@ -98,6 +98,7 @@ namespace CafeteriaWeb.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.CreatedOn = DateTime.Now;
                 user.ModifyedOn = DateTime.Now;
+                user.Enabled = true;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -133,6 +134,8 @@ namespace CafeteriaWeb.Areas.Identity.Pages.Account
 
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirme seu email", htmlEmailMessage);
+
+                    _userManager.AddToRoleAsync(user, "Client").Wait();
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

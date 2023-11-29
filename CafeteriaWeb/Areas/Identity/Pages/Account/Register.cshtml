@@ -5,22 +5,22 @@
 }
 
 @*<h1>@ViewData["Title"]</h1>*@
-
-<div class="row justify-content-center">
+<div class="page-card">
+    <div class="row justify-content-center">
         <div class="col-md-4 border-primary mb-3">
 
             <div class="card border-dark mb-3" style="max-width: 30rem;">
                 <div class="card-header text-center"><h2>Cadastre-se</h2></div>
                 <div class="card-body">
-                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">                    
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                         <div class="form-floating mb-3">
-                            <input asp-for="Input.FirstName" class="form-control" autocomplete="username" aria-required="true"/>
+                            <input asp-for="Input.FirstName" class="form-control" autocomplete="username" aria-required="true" />
                             <label asp-for="Input.FirstName">Nome</label>
                             <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                         </div>
                         <div class="form-floating mb-3">
-                            <input asp-for="Input.LastName" class="form-control" autocomplete="username" aria-required="true"/>
+                            <input asp-for="Input.LastName" class="form-control" autocomplete="username" aria-required="true" />
                             <label asp-for="Input.LastName">Sobrenome</label>
                             <span asp-validation-for="Input.LastName" class="text-danger"></span>
                         </div>
@@ -30,7 +30,7 @@
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
                         <div class="form-floating mb-3">
-                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Senha" />
+                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
                             <label asp-for="Input.Password">Senha</label>
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
@@ -40,7 +40,7 @@
                             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
                         <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Cadastrar</button>
-                        <section>
+                        @* <section>
                             <h3>Use another service to register.</h3>
                             <hr />
                             @{
@@ -69,20 +69,21 @@
                                     </form>
                                 }
                             }
-                        </section>
+                        </section> *@
                     </form>
                 </div>
             </div>
 
-        
 
-        
+
+
 
         </div>
         @*<div class="col-md-6 col-md-offset-2">
-        
+
         </div>*@
     </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -4,11 +4,11 @@
     ViewData["Title"] = "Autenticação de Dois Fatores";
 }
 <div class="page-card">
-    <h1>@ViewData["Title"]</h1>
+    <h1>@ViewData["Title"] <i class="fa-solid fa-user-shield"></i></h1>
     <hr />
     <p>Seu login está protegido com um aplicativo de autenticação. Insira seu código de autenticação abaixo.</p>
-    <div class="row">
-        <div class="col-md-4">
+    <div class="row" style="display: flex;justify-content: center;align-items: center;">
+        <div class="col-8">
             <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
                 <input asp-for="RememberMe" type="hidden" />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
@@ -29,11 +29,14 @@
             </form>
         </div>
     </div>
-    <p>
-        Não tem acesso ao seu dispositivo de autenticação? Você pode
-        <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">entrar com um código de recuperação</a>.
-    </p>
+    <div style="display: flex;justify-content: center;align-items: center;">
+        <p>
+            Não tem acesso ao seu dispositivo de autenticação? Você pode
+            <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">entrar com um código de recuperação</a>.
+        </p>
+    </div>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
